@@ -13,7 +13,7 @@ plugins {
 
 sonar {
 	properties {
-		property("sonar.projectKey", "postech-fiap_pagamento")
+		property("sonar.projectKey", "postech-fiap_pagamento-api")
 		property("sonar.organization", "postech-fiap")
 		property("sonar.host.url", "https://sonarcloud.io")
 		property("sonar.sourceEncoding", "UTF-8")
@@ -46,7 +46,7 @@ subprojects {
 
 	sonar {
 		properties {
-			property("sonar.projectKey", "postech-fiap_pagamento")
+			property("sonar.projectKey", "postech-fiap_pagamento-api")
 			property("sonar.organization", "postech-fiap")
 			property("sonar.host.url", "https://sonarcloud.io")
 			property("sonar.sourceEncoding", "UTF-8")

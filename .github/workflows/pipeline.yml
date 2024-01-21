@@ -3,56 +3,55 @@ on: [push]
 
 jobs:
 
-#  test:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout / copy repo app
-#        uses: actions/checkout@v4
-#        with:
-#          fetch-depth: 0
-#
-#      - name: Set up JDK 17
-#        uses: actions/setup-java@v3
-#        with:
-#          java-version: '17'
-#          distribution: 'temurin'
-#
-#      - name: Gradle version
-#        uses: gradle/gradle-build-action@v2
-#        with:
-#          gradle-version: 7.6.1
-#
-#      - run: gradle test
-#
-#  build:
-#    runs-on: ubuntu-latest
-#    needs: test
-#    steps:
-#      - name: Checkout / copy repo app
-#        uses: actions/checkout@v4
-#        with:
-#          fetch-depth: 0
-#
-#      - name: Set up JDK 17
-#        uses: actions/setup-java@v3
-#        with:
-#          java-version: '17'
-#          distribution: 'temurin'
-#
-#      - name: Gradle version
-#        uses: gradle/gradle-build-action@v2
-#        with:
-#          gradle-version: 7.6.1
-#
-#      - name: Validate Gradle wrapper
-#        uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3
-#
-#      - name: Run the Gradle package task
-#        run: gradle :presentation:build
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout / copy repo app
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Gradle version
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.6.1
+
+      - run: gradle test
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout / copy repo app
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Gradle version
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.6.1
+
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3
+
+      - name: Run the Gradle package task
+        run: gradle :presentation:build
 
   sonar-cloud:
     runs-on: ubuntu-latest
-#    needs: jacoco-coverage
     steps:
       - uses: actions/checkout@v4
         with:
@@ -74,30 +73,30 @@ jobs:
         with:
           args: >
             -Dsonar.organization=postech-fiap
-            -Dsonar.projectKey=postech-fiap_pagamento
+            -Dsonar.projectKey=postech-fiap_pagamento-api
             -Dsonar.sonar.host.url=https://sonarcloud.io
             -Dsonar.token=${{ secrets.SONAR_TOKEN }}
             -Dsonar.sourceEncoding=UTF-8
             -Dsonar.sources=.
             -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml
 
-#  docker-app-image:
-#    runs-on: ubuntu-latest
-#    needs: sonar-cloud
-#    steps:
-#      - name: Checkout / copy repo app
-#        uses: actions/checkout@v4
-#        with:
-#          fetch-depth: 0
-#
-#      - name: Login Docker Hub
-#        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-#
-#      - name: Build docker image
-#        run: docker build -t ${{secrets.docker_username}}/presentation-0.0.1-snapshot .
-#
-#      - name: Push image docker
-#        run: docker push ${{secrets.docker_username}}/presentation-0.0.1-snapshot
+  docker-app-image:
+    runs-on: ubuntu-latest
+    needs: sonar-cloud
+    steps:
+      - name: Checkout / copy repo app
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Login Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build docker image
+        run: docker build -t ${{secrets.docker_username}}/presentation-0.0.1-snapshot .
+
+      - name: Push image docker
+        run: docker push ${{secrets.docker_username}}/presentation-0.0.1-snapshot
 
 #  deploy-to-aws-eks:
 #    needs: docker-app-image
