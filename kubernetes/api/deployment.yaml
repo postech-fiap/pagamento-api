@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pagamento-api-deployment
+  labels:
+    app: pagamento-api-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pagamento-api
+  template:
+    metadata:
+      labels:
+        app: pagamento-api
+    spec:
+      containers:
+        - name: pagamento-api
+          image: melissa2019/presentation-0.0.1-snapshot:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: MONGO_DB_HOST
+              value: "pagamento-api-mongo-service"
+            - name: MONGO_DB_PORT
+              value: "27017"
+            - name: MONGO_DB_NAME
+              value: "pagamento_db"
+            - name: MERCADO_PAGO_USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: mp
+                  key: user-id
+            - name: MERCADO_PAGO_EXTERNAL_ID
+              valueFrom:
+                secretKeyRef:
+                  name: mp
+                  key: external-id
+            - name: MERCADO_PAGO_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: mp
+                  key: token
+            - name: MERCADO_PAGO_WEBHOOK_URL
+              valueFrom:
+                secretKeyRef:
+                  name: mp
+                  key: webhook-url
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            failureThreshold: 2
