@@ -5,7 +5,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: mongo-db
+    app: pagamento-api-mongo
   ports:
-    - port: 3306
-      targetPort: 3306
+    - port: 27017
+      targetPort: 27017
