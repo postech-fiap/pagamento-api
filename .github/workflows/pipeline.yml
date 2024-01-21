@@ -68,6 +68,7 @@ jobs:
             -Dsonar.sonar.host.url=https://sonarcloud.io
             -Dsonar.token=${{ secrets.SONAR_TOKEN }}
             -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml
+            -Dsonar.sources=domain/src/main/kotlin,infrastructure/src/main/kotlin,presentation/src/main/kotlin
 
   docker-app-image:
     runs-on: ubuntu-latest

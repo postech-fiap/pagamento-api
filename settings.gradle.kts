@@ -1,4 +1,4 @@
-rootProject.name = "pagamento"
+rootProject.name = "pagamento-api"
 
 include(
     "presentation",

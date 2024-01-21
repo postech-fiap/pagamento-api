@@ -35,7 +35,7 @@ services:
     networks:
       - pagamento-network
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:3306" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:27017" ]
 
 networks:
   pagamento-network:
