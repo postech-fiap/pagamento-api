@@ -18,8 +18,6 @@ gradle sonar
 
 E acesse http://localhost:9000
 
-![Alt text](https://github.com/postech-fiap/pagamento/blob/feature/add-pagamento-api-test/docs/assets/Cobertura_de_codigo.png?raw=true)
-
 ## Executando com Docker
 
 Com o `docker` instalado, execute o comando:
