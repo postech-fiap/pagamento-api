@@ -4,7 +4,7 @@ services:
   app:
     build: .
     image: pagamento-app
-    container_name: pagamento-app-container
+    container_name: pagamento-api
     environment:
       MONGO_DB_HOST: "${MONGO_DB_HOST}"
       MONGO_DB_PORT: "${MONGO_DB_PORT}"
@@ -23,7 +23,7 @@ services:
       - pagamento-network
 
   mongo-db:
-    container_name: mongo-db
+    container_name: pagamento-api-mongo
     image: mongo
     restart: always
     environment:
