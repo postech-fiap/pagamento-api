@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 
 data class Pagamento(
     val id: String? = null,
-    val pedidoId: Long,
+    val referenciaPedido: String,
     val dataHora: LocalDateTime,
     val status: PagamentoStatus,
     val qrCode: String,

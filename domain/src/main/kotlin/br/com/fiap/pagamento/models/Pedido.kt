@@ -4,8 +4,8 @@ import java.math.BigDecimal
 import java.time.OffsetDateTime
 
 data class Pedido(
-    val id: Long,
-    val numero: String,
+    val referenciaPedido: String,
+    val numeroPedido: String,
     val dataHora: OffsetDateTime = OffsetDateTime.now(),
     var items: List<Item> = listOf(),
     var valorTotal: BigDecimal

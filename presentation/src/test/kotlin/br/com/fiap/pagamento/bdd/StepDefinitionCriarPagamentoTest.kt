@@ -20,8 +20,8 @@ class StepDefinitionCriarPagamentoTest : Pt {
                 .body(
                     """
                     {
-                        "id": 10,
-                        "numero": "11",
+                        "referenciaPedido": 10,
+                        "numeroPedido": "11",
                         "data_hora": "2024-02-06T15:30:30Z",
                         "items": [{
                             "quantidade": 1,

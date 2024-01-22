@@ -20,8 +20,8 @@ class PagamentoAdapterImpl(
 
     override fun criar(request: PedidoCriadoRequest): Pagamento {
         return try {
-            consultarPagamentoUseCase.executar(request.id)
-            throw RecursoJaExisteException("Pagamento já existe para o pedido: ${request.id}")
+            consultarPagamentoUseCase.executar(request.referenciaPedido)
+            throw RecursoJaExisteException("Pagamento já existe para o pedido com referencia externa: ${request.referenciaPedido}")
         } catch (ex: RecursoNaoEncontradoException) {
             gerarQrCodePagamentoUseCase.executar(request.toModel())
                 .let { pagamentoRepository.salvar(it) }

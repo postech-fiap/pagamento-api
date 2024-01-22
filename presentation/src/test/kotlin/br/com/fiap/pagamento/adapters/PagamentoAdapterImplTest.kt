@@ -55,11 +55,11 @@ class PagamentoAdapterImplTest {
     @Test
     fun `deve criar o pagamento com sucesso quando nao existir`() {
         //given
-        val pedidoId = 1L
+        val pedidoId = "1"
         val pagamento = criarPagamento(pedidoId)
         val pedidoCriadoRequest = PedidoCriadoRequest(
-            id = pedidoId,
-            numero = "123",
+            referenciaPedido = pedidoId,
+            numeroPedido = "123",
             dataHora = OffsetDateTime.now(),
             items = listOf(criarItem(), criarItem()),
             valorTotal = BigDecimal.TEN
@@ -74,7 +74,7 @@ class PagamentoAdapterImplTest {
 
         //then
         assertEquals(pagamento.id, result.id)
-        assertEquals(pagamento.pedidoId, result.pedidoId)
+        assertEquals(pagamento.referenciaPedido, result.referenciaPedido)
         assertEquals(pagamento.dataHora, result.dataHora)
         assertEquals(pagamento.qrCode, result.qrCode)
         assertEquals(pagamento.status, result.status)
@@ -88,11 +88,11 @@ class PagamentoAdapterImplTest {
     @Test
     fun `deve lancar uma exception ao criar o pagamento quando ele ja existir`() {
         //given
-        val pedidoId = 1L
+        val pedidoId = "1"
         val pagamento = criarPagamento(pedidoId)
         val pedidoCriadoRequest = PedidoCriadoRequest(
-            id = pedidoId,
-            numero = "123",
+            referenciaPedido = pedidoId,
+            numeroPedido = "123",
             dataHora = OffsetDateTime.now(),
             items = listOf(criarItem(), criarItem()),
             valorTotal = BigDecimal.TEN
@@ -106,7 +106,7 @@ class PagamentoAdapterImplTest {
         }
 
         //then
-        assertEquals("Pagamento já existe para o pedido: $pedidoId", exception.message);
+        assertEquals("Pagamento já existe para o pedido com referencia externa: $pedidoId", exception.message);
 
         verify(exactly = 1) { consultarPagamentoUseCase.executar(pedidoId) }
         verify(exactly = 0) { gerarQrCodePagamentoUseCase.executar(any()) }
@@ -117,7 +117,7 @@ class PagamentoAdapterImplTest {
     fun `deve finalizar o pagamento com sucesso`() {
         //given
         val pagamentoId = 1L
-        val pedidoId = 1L
+        val pedidoId = "1"
         val pagamento = criarPagamento(pedidoId)
 
         val pagamentoCriadoRequest = pagamentoCriadoRequest(pagamentoId)
@@ -129,7 +129,7 @@ class PagamentoAdapterImplTest {
 
         //then
         assertEquals(pagamento.id, result.id)
-        assertEquals(pagamento.pedidoId, result.pedidoId)
+        assertEquals(pagamento.referenciaPedido, result.referenciaPedido)
         assertEquals(pagamento.dataHora, result.dataHora)
         assertEquals(pagamento.qrCode, result.qrCode)
         assertEquals(pagamento.status, result.status)
@@ -165,10 +165,10 @@ class PagamentoAdapterImplTest {
         valor = BigDecimal(10)
     )
 
-    private fun criarPagamento(pedidoId: Long) =
+    private fun criarPagamento(pedidoId: String) =
         Pagamento(
             id = UUID.randomUUID().toString(),
-            pedidoId = pedidoId,
+            referenciaPedido = pedidoId,
             dataHora = LocalDateTime.now().minusDays(1),
             status = PagamentoStatus.APROVADO,
             qrCode = Random().nextLong().toString(),

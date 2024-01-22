@@ -25,9 +25,9 @@ class PagamentoRepositoryImpl(private val pagamentoMongoRepository: PagamentoMon
         }
     }
 
-    override fun consultarPorPedido(pedidoId: Long): Pagamento? {
+    override fun consultarPorPedido(referenciaPedido: String): Pagamento? {
         return try {
-            pagamentoMongoRepository.findByPedidoId(pedidoId)?.toModel()
+            pagamentoMongoRepository.findByPedidoId(referenciaPedido)?.toModel()
         } catch (ex: Exception) {
             throw BaseDeDadosException(String.format(ERROR_MESSAGE_FIND, ex.message))
         }

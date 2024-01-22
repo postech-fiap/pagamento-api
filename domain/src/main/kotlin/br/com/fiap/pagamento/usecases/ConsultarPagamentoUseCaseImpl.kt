@@ -10,8 +10,8 @@ class ConsultarPagamentoUseCaseImpl(
     private val pagamentoRepository: PagamentoRepository
 ) : ConsultarPagamentoUseCase {
 
-    override fun executar(pedidoId: Long): Pagamento {
-        return Optional.ofNullable(pagamentoRepository.consultarPorPedido(pedidoId))
+    override fun executar(referenciaPedido: String): Pagamento {
+        return Optional.ofNullable(pagamentoRepository.consultarPorPedido(referenciaPedido))
             .orElseThrow { RecursoNaoEncontradoException("Pagamento não encontrado") }
     }
 }

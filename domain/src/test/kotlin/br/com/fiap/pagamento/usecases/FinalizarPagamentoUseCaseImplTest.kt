@@ -59,14 +59,14 @@ class FinalizarPagamentoUseCaseImplTest {
 
         //then
         assertEquals(notificacaoPagamentoCriado.data.id, result.id)
-        assertEquals(pedidoMercadoPago.elements!![0].externalReference, result.pedidoId.toString())
+        assertEquals(pedidoMercadoPago.elements!![0].externalReference, result.referenciaPedido.toString())
         assertEquals(pagamento.dataHora, result.dataHora)
         assertEquals(pagamento.qrCode, result.qrCode)
         assertEquals(PagamentoStatus.APROVADO, result.status)
         assertEquals(pagamento.valorTotal, result.valorTotal)
 
         verify(exactly = 1) { buscarPagamentoPorIdGateway.executar(notificacaoPagamentoCriado.data.id) }
-        verify(exactly = 1) { alterarStatusPagamentoUseCase.executar(pedidoId, PagamentoStatus.APROVADO) }
+        verify(exactly = 1) { alterarStatusPagamentoUseCase.executar(pedidoId.toString(), PagamentoStatus.APROVADO) }
         verify(exactly = 1) { atualizarPedidoGateway.executar(pedidoId, pagamento.id!!, PagamentoStatus.APROVADO) }
     }
 
@@ -88,21 +88,21 @@ class FinalizarPagamentoUseCaseImplTest {
 
         //then
         assertEquals(notificacaoPagamentoCriado.data.id, result.id)
-        assertEquals(pedidoMercadoPago.elements!![0].externalReference, result.pedidoId.toString())
+        assertEquals(pedidoMercadoPago.elements!![0].externalReference, result.referenciaPedido.toString())
         assertEquals(pagamento.dataHora, result.dataHora)
         assertEquals(pagamento.qrCode, result.qrCode)
         assertEquals(PagamentoStatus.REPROVADO, result.status)
         assertEquals(pagamento.valorTotal, result.valorTotal)
 
         verify(exactly = 1) { buscarPagamentoPorIdGateway.executar(notificacaoPagamentoCriado.data.id) }
-        verify(exactly = 1) { alterarStatusPagamentoUseCase.executar(pedidoId, PagamentoStatus.REPROVADO) }
+        verify(exactly = 1) { alterarStatusPagamentoUseCase.executar(pedidoId.toString(), PagamentoStatus.REPROVADO) }
         verify(exactly = 1) { atualizarPedidoGateway.executar(pedidoId, pagamento.id!!, PagamentoStatus.REPROVADO) }
     }
 
     private fun criarPagamento(pedidoId: Long, pagamentoId: String) =
             Pagamento(
                     id = pagamentoId,
-                    pedidoId = pedidoId,
+                    referenciaPedido = pedidoId.toString(),
                     dataHora = LocalDateTime.now().minusDays(1),
                     status = PagamentoStatus.APROVADO,
                     qrCode = Random().nextLong().toString(),

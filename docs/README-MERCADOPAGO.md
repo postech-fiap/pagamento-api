@@ -15,8 +15,8 @@ Para criar um pedido e obter o qr_code de pagamento, você precisará gerar uma 
 curl --location 'http://localhost:8080/v1/pagamentos/criar' \
 --header 'Content-Type: application/json' \
 --data '{
-    "id": 10,
-    "numero": "11",
+    "referenciaPedido": "10",
+    "numeroPedido": "11",
     "data_hora": "2024-02-06T15:30:30Z",
     "items": [{
         "quantidade": 1,

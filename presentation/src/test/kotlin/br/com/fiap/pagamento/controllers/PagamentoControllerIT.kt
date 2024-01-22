@@ -31,7 +31,7 @@ class PagamentoControllerIT : IntegrationTest() {
     fun `deve retornar 201 created ao criar com sucesso`() {
         //given
         val pedidoCriadoRequest = criarPedidoRequest()
-        val pagamento = criarPagamento(1L)
+        val pagamento = criarPagamento("1")
 
         every { pagamentoAdapter.criar(any()) } returns pagamento
 
@@ -46,7 +46,7 @@ class PagamentoControllerIT : IntegrationTest() {
             .andExpect {
                 status { isCreated() }
                 jsonPath("$.id").value(pagamento.id)
-                jsonPath("$.pedidoId").value(pagamento.pedidoId)
+                jsonPath("$.referenciaPedido").value(pagamento.referenciaPedido)
                 jsonPath("$.dataHora").value(pagamento.dataHora)
                 jsonPath("$.status").value(pagamento.status)
                 jsonPath("$.qrCode").value(pagamento.qrCode)
@@ -55,10 +55,10 @@ class PagamentoControllerIT : IntegrationTest() {
     }
 
     @Test
-    fun `deve retornar 400 bad request ao criar quando a request tem numero invalido`() {
+    fun `deve retornar 400 bad request ao criar quando a request tem numeroPedido invalido`() {
         //given
-        val pedidoCriadoRequest = criarPedidoRequest().copy(numero = "")
-        val pagamento = criarPagamento(pedidoCriadoRequest.id)
+        val pedidoCriadoRequest = criarPedidoRequest().copy(numeroPedido = "")
+        val pagamento = criarPagamento(pedidoCriadoRequest.referenciaPedido)
 
         every { pagamentoAdapter.criar(any()) } returns pagamento
 
@@ -79,7 +79,7 @@ class PagamentoControllerIT : IntegrationTest() {
     fun `deve retornar 400 bad request ao criar quando a request tem itens invalidos`() {
         //given
         val pedidoCriadoRequest = criarPedidoRequest().copy(items = emptyList())
-        val pagamento = criarPagamento(pedidoCriadoRequest.id)
+        val pagamento = criarPagamento(pedidoCriadoRequest.referenciaPedido)
 
         every { pagamentoAdapter.criar(any()) } returns pagamento
 
@@ -199,7 +199,7 @@ class PagamentoControllerIT : IntegrationTest() {
     @Test
     fun `deve retornar 200 ok ao finalizar com sucesso`() {
         //given
-        val pagamento = criarPagamento(1L)
+        val pagamento = criarPagamento("1")
 
         every { pagamentoAdapter.finalizar(any()) } returns pagamento
 
@@ -221,7 +221,7 @@ class PagamentoControllerIT : IntegrationTest() {
             .andExpect {
                 status { isOk() }
                 jsonPath("$.id").value(pagamento.id)
-                jsonPath("$.pedidoId").value(pagamento.pedidoId)
+                jsonPath("$.referenciaPedido").value(pagamento.referenciaPedido)
                 jsonPath("$.dataHora").value(pagamento.dataHora)
                 jsonPath("$.status").value(pagamento.status)
                 jsonPath("$.qrCode").value(pagamento.qrCode)
@@ -232,7 +232,7 @@ class PagamentoControllerIT : IntegrationTest() {
     @Test
     fun `deve retornar 400 bad request ao finalizar quando a request tem tipo invalido`() {
         //given
-        val pagamento = criarPagamento(1L)
+        val pagamento = criarPagamento("1")
 
         every { pagamentoAdapter.finalizar(any()) } returns pagamento
 
@@ -259,7 +259,7 @@ class PagamentoControllerIT : IntegrationTest() {
     @Test
     fun `deve retornar 400 bad request ao finalizar quando a request tem action invalida`() {
         //given
-        val pagamento = criarPagamento(1L)
+        val pagamento = criarPagamento("1")
 
         every { pagamentoAdapter.finalizar(any()) } returns pagamento
 
@@ -286,7 +286,7 @@ class PagamentoControllerIT : IntegrationTest() {
     @Test
     fun `deve retornar 400 bad request ao finalizar quando a request tem type invalido`() {
         //given
-        val pagamento = criarPagamento(1L)
+        val pagamento = criarPagamento("1")
 
         every { pagamentoAdapter.finalizar(any()) } returns pagamento
 
@@ -313,7 +313,7 @@ class PagamentoControllerIT : IntegrationTest() {
     @Test
     fun `deve retornar 400 bad request ao finalizar quando a request tem data id invalida`() {
         //given
-        val pagamento = criarPagamento(1L)
+        val pagamento = criarPagamento("1")
 
         every { pagamentoAdapter.finalizar(any()) } returns pagamento
 
@@ -337,8 +337,8 @@ class PagamentoControllerIT : IntegrationTest() {
     }
 
     private fun criarPedidoRequest() = PedidoCriadoRequest(
-        id = 123L,
-        numero = "123",
+        referenciaPedido = "123",
+        numeroPedido = "123",
         dataHora = OffsetDateTime.now(),
         items = listOf(criarItem()),
         valorTotal = BigDecimal.TEN
@@ -358,10 +358,10 @@ class PagamentoControllerIT : IntegrationTest() {
         valor = BigDecimal(10)
     )
 
-    private fun criarPagamento(pedidoId: Long) =
+    private fun criarPagamento(pedidoId: String) =
         Pagamento(
             id = UUID.randomUUID().toString(),
-            pedidoId = pedidoId,
+            referenciaPedido = pedidoId,
             dataHora = LocalDateTime.now().minusDays(1),
             status = PagamentoStatus.APROVADO,
             qrCode = Random().nextLong().toString(),

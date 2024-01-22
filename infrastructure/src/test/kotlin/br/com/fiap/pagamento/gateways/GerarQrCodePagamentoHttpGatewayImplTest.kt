@@ -46,8 +46,8 @@ class GerarQrCodePagamentoHttpGatewayImplTest {
     fun `deve gerar o pagamento pendente com qrcode`() {
         //given
         val pedido = Pedido(
-                id = 1,
-                numero = "1",
+                referenciaPedido = "1",
+                numeroPedido = "1",
                 valorTotal = Random.nextLong().toBigDecimal(),
                 items = listOf(
                         Item(
@@ -97,8 +97,8 @@ class GerarQrCodePagamentoHttpGatewayImplTest {
     fun `deve lancar um erro quando a integracao de gerar o pagamento falhar`() {
         //given
         val pedido = Pedido(
-                id = 1,
-                numero = "1",
+                referenciaPedido = "1",
+                numeroPedido = "1",
                 valorTotal = Random.nextLong().toBigDecimal(),
                 items = listOf(
                         Item(
@@ -147,8 +147,8 @@ class GerarQrCodePagamentoHttpGatewayImplTest {
     fun `deve lancar um erro quando o retorno da integracao for diferente de 201`() {
         //given
         val pedido = Pedido(
-                id = 1,
-                numero = "1",
+                referenciaPedido = "1",
+                numeroPedido = "1",
                 valorTotal = Random.nextLong().toBigDecimal(),
                 items = listOf(
                         Item(

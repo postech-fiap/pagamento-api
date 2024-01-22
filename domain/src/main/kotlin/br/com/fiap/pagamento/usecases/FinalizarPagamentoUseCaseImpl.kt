@@ -21,7 +21,7 @@ class FinalizarPagamentoUseCaseImpl(
         val pagamentoMercadoPago = ordemComPagamentoMercadoPago.obterUltimoPagamento(pedidoId)
 
         val pagamentoComNovoStatus = alterarStatusPagamentoUseCase.executar(
-            pedidoId.toLong(),
+            pedidoId,
             pagamentoMercadoPago.calcularStatusPagamento()
         )
 

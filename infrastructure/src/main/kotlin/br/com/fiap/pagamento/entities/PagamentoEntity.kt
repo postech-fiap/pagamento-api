@@ -12,8 +12,8 @@ import java.time.LocalDateTime
 data class PagamentoEntity(
     @Id
     val id: String? = null,
-    @Field("pedido_id")
-    val pedidoId: Long,
+    @Field("referencia_pedido")
+    val referenciaPedido: String,
     @Field("data_hora")
     val dataHora: LocalDateTime,
     val status: PagamentoStatus,
@@ -22,12 +22,12 @@ data class PagamentoEntity(
     @Field("valor_total")
     val valorTotal: BigDecimal,
 ) {
-    fun toModel() = Pagamento(id, pedidoId, dataHora, status, qrCode, valorTotal)
+    fun toModel() = Pagamento(id, referenciaPedido, dataHora, status, qrCode, valorTotal)
 
     companion object {
         fun fromModel(pagamento: Pagamento) = PagamentoEntity(
             id = pagamento.id,
-            pedidoId = pagamento.pedidoId,
+            referenciaPedido = pagamento.referenciaPedido,
             dataHora = pagamento.dataHora,
             status = pagamento.status,
             qrCode = pagamento.qrCode,

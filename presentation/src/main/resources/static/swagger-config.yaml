@@ -112,9 +112,9 @@ components:
     PedidoCriadoRequest:
       type: object
       properties:
-        id:
-          type: number
-        numero:
+        referenciaPedido:
+          type: string
+        numeroPedido:
           type: string
         dataHora:
           type: string

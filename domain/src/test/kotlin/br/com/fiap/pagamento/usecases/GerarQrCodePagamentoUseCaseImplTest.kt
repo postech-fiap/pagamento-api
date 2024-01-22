@@ -38,7 +38,7 @@ class GerarQrCodePagamentoUseCaseImplTest {
     fun `deve gerar o qr code do pagamento com sucesso`() {
         //given
         val pedido = criarPedido()
-        val pagamento = criarPagamento(pedido.id)
+        val pagamento = criarPagamento(pedido.referenciaPedido)
 
         every { gerarQrCodePagamentoGateway.executar(any()) } returns pagamento
 
@@ -47,7 +47,7 @@ class GerarQrCodePagamentoUseCaseImplTest {
 
         //then
         assertEquals(pagamento.id, result.id)
-        assertEquals(pagamento.pedidoId, result.pedidoId)
+        assertEquals(pagamento.referenciaPedido, result.referenciaPedido)
         assertEquals(pagamento.dataHora, result.dataHora)
         assertEquals(pagamento.qrCode, result.qrCode)
         assertEquals(pagamento.status, result.status)
@@ -59,8 +59,8 @@ class GerarQrCodePagamentoUseCaseImplTest {
 
     private fun criarPedido() =
             Pedido(
-                    id = 123L,
-                    numero = "123",
+                    referenciaPedido = "123",
+                    numeroPedido = "123",
                     dataHora = OffsetDateTime.now(),
                     items = listOf(criarItem()),
                     valorTotal = BigDecimal.TEN
@@ -81,10 +81,10 @@ class GerarQrCodePagamentoUseCaseImplTest {
             valor = BigDecimal(10)
     )
 
-    private fun criarPagamento(pedidoId: Long) =
+    private fun criarPagamento(pedidoId: String) =
             Pagamento(
                     id = UUID.randomUUID().toString(),
-                    pedidoId = pedidoId,
+                    referenciaPedido = pedidoId,
                     dataHora = LocalDateTime.now().minusDays(1),
                     status = PagamentoStatus.APROVADO,
                     qrCode = Random().nextLong().toString(),

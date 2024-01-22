@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.repository.Query
 
 interface PagamentoMongoRepository : MongoRepository<PagamentoEntity, Long> {
 
-    @Query("{pedidoId:?0}")
-    fun findByPedidoId(pedidoId: Long) : PagamentoEntity?
+    @Query("{referenciaPedido:?0}")
+    fun findByPedidoId(referenciaPedido: String) : PagamentoEntity?
 
 }
