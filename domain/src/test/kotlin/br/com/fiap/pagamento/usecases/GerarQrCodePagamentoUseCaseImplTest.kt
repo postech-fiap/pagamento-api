@@ -15,7 +15,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.math.BigDecimal
-import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -85,7 +84,7 @@ class GerarQrCodePagamentoUseCaseImplTest {
             Pagamento(
                     id = UUID.randomUUID().toString(),
                     referenciaPedido = pedidoId,
-                    dataHora = LocalDateTime.now().minusDays(1),
+                    dataHora = OffsetDateTime.now().minusDays(1),
                     status = PagamentoStatus.APROVADO,
                     qrCode = Random().nextLong().toString(),
                     valorTotal = BigDecimal.TEN

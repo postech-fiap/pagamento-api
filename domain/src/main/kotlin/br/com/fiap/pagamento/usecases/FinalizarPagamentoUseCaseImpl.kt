@@ -16,16 +16,16 @@ class FinalizarPagamentoUseCaseImpl(
     override fun executar(pagamentoCriado: PagamentoCriado): Pagamento {
         val ordemComPagamentoMercadoPago = buscarPagamentoPorIdGateway.executar(pagamentoCriado.data.id)
 
-        val pedidoId = ordemComPagamentoMercadoPago.obterIdDoPedido()
+        val referenciaPedido = ordemComPagamentoMercadoPago.obterIdDoPedido()
 
-        val pagamentoMercadoPago = ordemComPagamentoMercadoPago.obterUltimoPagamento(pedidoId)
+        val pagamentoMercadoPago = ordemComPagamentoMercadoPago.obterUltimoPagamento(referenciaPedido)
 
         val pagamentoComNovoStatus = alterarStatusPagamentoUseCase.executar(
-            pedidoId,
+            referenciaPedido,
             pagamentoMercadoPago.calcularStatusPagamento()
         )
 
-        atualizarPedidoGateway.executar(pedidoId.toLong(), pagamentoComNovoStatus.id!!, pagamentoComNovoStatus.status)
+        atualizarPedidoGateway.executar(referenciaPedido, pagamentoComNovoStatus.id!!, pagamentoComNovoStatus.status)
 
         return pagamentoComNovoStatus
     }

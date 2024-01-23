@@ -88,8 +88,8 @@ jobs:
       - name: Push image docker
         run: docker push ${{secrets.docker_username}}/presentation-0.0.1-snapshot
 
-#  deploy-to-aws-eks:
-#    needs: docker-app-image
-#    if: github.ref == 'refs/heads/feature/pipeline'
-#    uses: ./.github/workflows/deploy-eks.yml
-#    secrets: inherit
+  deploy-to-aws-eks:
+    needs: docker-app-image
+    if: github.ref == 'refs/heads/feature/add-pagamento-api'
+    uses: ./.github/workflows/deploy-eks.yml
+    secrets: inherit

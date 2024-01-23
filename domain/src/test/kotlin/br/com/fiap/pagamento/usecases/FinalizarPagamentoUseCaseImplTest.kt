@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.math.BigDecimal
 import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import java.util.*
 
 @ExtendWith(MockKExtension::class)
@@ -45,10 +46,10 @@ class FinalizarPagamentoUseCaseImplTest {
     @Test
     fun `deve atualizar o pagamento como FINALIZADO quando o pagamento for aprovado`() {
         //given
-        val pedidoId = 1L
-        val pedidoMercadoPago = criarPedidoMercadoPago(pedidoId, "approved")
+        val referenciaPedido = "1"
+        val pedidoMercadoPago = criarPedidoMercadoPago(referenciaPedido, "approved")
         val notificacaoPagamentoCriado = criarPagamentoNotificado()
-        val pagamento = criarPagamento(pedidoId, notificacaoPagamentoCriado.data.id)
+        val pagamento = criarPagamento(referenciaPedido, notificacaoPagamentoCriado.data.id)
 
         every { buscarPagamentoPorIdGateway.executar(any()) } returns pedidoMercadoPago
         every { alterarStatusPagamentoUseCase.executar(any(), any()) } returns pagamento
@@ -59,24 +60,24 @@ class FinalizarPagamentoUseCaseImplTest {
 
         //then
         assertEquals(notificacaoPagamentoCriado.data.id, result.id)
-        assertEquals(pedidoMercadoPago.elements!![0].externalReference, result.referenciaPedido.toString())
+        assertEquals(pedidoMercadoPago.elements!![0].externalReference, result.referenciaPedido)
         assertEquals(pagamento.dataHora, result.dataHora)
         assertEquals(pagamento.qrCode, result.qrCode)
         assertEquals(PagamentoStatus.APROVADO, result.status)
         assertEquals(pagamento.valorTotal, result.valorTotal)
 
         verify(exactly = 1) { buscarPagamentoPorIdGateway.executar(notificacaoPagamentoCriado.data.id) }
-        verify(exactly = 1) { alterarStatusPagamentoUseCase.executar(pedidoId.toString(), PagamentoStatus.APROVADO) }
-        verify(exactly = 1) { atualizarPedidoGateway.executar(pedidoId, pagamento.id!!, PagamentoStatus.APROVADO) }
+        verify(exactly = 1) { alterarStatusPagamentoUseCase.executar(referenciaPedido, PagamentoStatus.APROVADO) }
+        verify(exactly = 1) { atualizarPedidoGateway.executar(referenciaPedido, pagamento.id!!, PagamentoStatus.APROVADO) }
     }
 
     @Test
     fun `deve atualizar o pagamento como REPROVADO quando o pagamento nao for aprovado`() {
         //given
-        val pedidoId = 1L
-        val pedidoMercadoPago = criarPedidoMercadoPago(pedidoId, "invalid")
+        val referenciaPedido = "1"
+        val pedidoMercadoPago = criarPedidoMercadoPago(referenciaPedido, "invalid")
         val notificacaoPagamentoCriado = criarPagamentoNotificado()
-        val pagamento = criarPagamento(pedidoId, notificacaoPagamentoCriado.data.id)
+        val pagamento = criarPagamento(referenciaPedido, notificacaoPagamentoCriado.data.id)
                 .copy(status = PagamentoStatus.REPROVADO)
 
         every { buscarPagamentoPorIdGateway.executar(any()) } returns pedidoMercadoPago
@@ -95,27 +96,27 @@ class FinalizarPagamentoUseCaseImplTest {
         assertEquals(pagamento.valorTotal, result.valorTotal)
 
         verify(exactly = 1) { buscarPagamentoPorIdGateway.executar(notificacaoPagamentoCriado.data.id) }
-        verify(exactly = 1) { alterarStatusPagamentoUseCase.executar(pedidoId.toString(), PagamentoStatus.REPROVADO) }
-        verify(exactly = 1) { atualizarPedidoGateway.executar(pedidoId, pagamento.id!!, PagamentoStatus.REPROVADO) }
+        verify(exactly = 1) { alterarStatusPagamentoUseCase.executar(referenciaPedido.toString(), PagamentoStatus.REPROVADO) }
+        verify(exactly = 1) { atualizarPedidoGateway.executar(referenciaPedido, pagamento.id!!, PagamentoStatus.REPROVADO) }
     }
 
-    private fun criarPagamento(pedidoId: Long, pagamentoId: String) =
+    private fun criarPagamento(referenciaPedido: String, pagamentoId: String) =
             Pagamento(
                     id = pagamentoId,
-                    referenciaPedido = pedidoId.toString(),
-                    dataHora = LocalDateTime.now().minusDays(1),
+                    referenciaPedido = referenciaPedido.toString(),
+                    dataHora = OffsetDateTime.now().minusDays(1),
                     status = PagamentoStatus.APROVADO,
                     qrCode = Random().nextLong().toString(),
                     valorTotal = BigDecimal.TEN
             )
 
-    private fun criarPedidoMercadoPago(pedidoId: Long, pagamentoStatus: String) =
+    private fun criarPedidoMercadoPago(referenciaPedido: String, pagamentoStatus: String) =
             MerchantOrders(
                     elements = listOf(
                             MerchantOrders.Elements(
                                     id = Random().nextLong(),
                                     status = "Status",
-                                    externalReference = pedidoId.toString(),
+                                    externalReference = referenciaPedido.toString(),
                                     payments = listOf(MerchantOrders.Elements.Payment(
                                             id = Random().nextLong(),
                                             transactionAmount = BigDecimal.TEN,

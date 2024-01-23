@@ -6,7 +6,6 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
 import java.math.BigDecimal
-import java.time.LocalDateTime
 
 @Document(collection = "pagamento")
 data class PagamentoEntity(
@@ -15,7 +14,7 @@ data class PagamentoEntity(
     @Field("referencia_pedido")
     val referenciaPedido: String,
     @Field("data_hora")
-    val dataHora: LocalDateTime,
+    val dataHora: String,
     val status: PagamentoStatus,
     @Field("qr_code")
     val qrCode: String,
@@ -28,7 +27,7 @@ data class PagamentoEntity(
         fun fromModel(pagamento: Pagamento) = PagamentoEntity(
             id = pagamento.id,
             referenciaPedido = pagamento.referenciaPedido,
-            dataHora = pagamento.dataHora,
+            dataHora = pagamento.dataHora.toString(),
             status = pagamento.status,
             qrCode = pagamento.qrCode,
             valorTotal = pagamento.valorTotal

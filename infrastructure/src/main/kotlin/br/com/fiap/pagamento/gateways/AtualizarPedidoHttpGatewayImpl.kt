@@ -16,7 +16,7 @@ class AtualizarPedidoHttpGatewayImpl(
     private val pedidosApiEndpoint: String
 ) : AtualizarPedidoGateway {
 
-    override fun executar(idPedido: Long, idPagamento: String, statusPagamento: PagamentoStatus) {
+    override fun executar(referenciaPedido: String, idPagamento: String, statusPagamento: PagamentoStatus) {
 
         try {
 
@@ -24,7 +24,7 @@ class AtualizarPedidoHttpGatewayImpl(
                 restTemplate.exchange(
                     pedidosApiEndpoint,
                     HttpMethod.PUT,
-                    buildHttpEntity(idPedido, idPagamento, statusPagamento),
+                    buildHttpEntity(referenciaPedido, idPagamento, statusPagamento),
                     String::class.java
                 )
 
@@ -45,15 +45,15 @@ class AtualizarPedidoHttpGatewayImpl(
     }
 
     data class AtualizarPedidoRequest(
-        private val idPedido: Long,
+        private val referenciaPedido: String,
         private val idPagamento: String,
         private val statusPagamento: String
     )
 
-    private fun buildHttpEntity(idPedido: Long, idPagamento: String, statusPagamento: PagamentoStatus) =
+    private fun buildHttpEntity(referenciaPedido: String, idPagamento: String, statusPagamento: PagamentoStatus) =
         HttpHeaders()
             .let {
                 it.set("Content-Type", "application/json")
-                HttpEntity(AtualizarPedidoRequest(idPedido, idPagamento, statusPagamento.toString()))
+                HttpEntity(AtualizarPedidoRequest(referenciaPedido, idPagamento, statusPagamento.toString()))
             }
 }

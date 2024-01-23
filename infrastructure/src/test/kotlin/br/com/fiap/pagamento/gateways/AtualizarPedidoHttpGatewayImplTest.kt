@@ -37,7 +37,7 @@ class AtualizarPedidoHttpGatewayImplTest {
     fun `deve atualizar o pedido com sucesso`() {
         //given
         val random = Random.nextLong()
-        val idPedido = random.toString().toLong()
+        val idPedido = random.toString()
         val idPagamento = random.toString()
         val statusPagamento = PagamentoStatus.APROVADO
 
@@ -70,7 +70,7 @@ class AtualizarPedidoHttpGatewayImplTest {
     fun `deve lancar um erro quando a integracao de atualizar o pedido falhar`() {
         //given
         val random = Random.nextLong()
-        val idPedido = random.toString().toLong()
+        val idPedido = random.toString()
         val idPagamento = random.toString()
         val statusPagamento = PagamentoStatus.APROVADO
 
@@ -108,7 +108,7 @@ class AtualizarPedidoHttpGatewayImplTest {
     fun `deve lancar um erro quando o retorno da integracao for diferente de 200`() {
         //given
         val random = Random.nextLong()
-        val idPedido = random.toString().toLong()
+        val idPedido = random.toString()
         val idPagamento = random.toString()
         val statusPagamento = PagamentoStatus.APROVADO
 
