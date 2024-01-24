@@ -104,7 +104,7 @@ class FinalizarPagamentoUseCaseImplTest {
             Pagamento(
                     id = pagamentoId,
                     referenciaPedido = referenciaPedido.toString(),
-                    dataHora = OffsetDateTime.now().minusDays(1),
+                    dataHora = OffsetDateTime.now().minusDays(1).toString(),
                     status = PagamentoStatus.APROVADO,
                     qrCode = Random().nextLong().toString(),
                     valorTotal = BigDecimal.TEN
@@ -116,7 +116,7 @@ class FinalizarPagamentoUseCaseImplTest {
                             MerchantOrders.Elements(
                                     id = Random().nextLong(),
                                     status = "Status",
-                                    externalReference = referenciaPedido.toString(),
+                                    externalReference = referenciaPedido,
                                     payments = listOf(MerchantOrders.Elements.Payment(
                                             id = Random().nextLong(),
                                             transactionAmount = BigDecimal.TEN,

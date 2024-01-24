@@ -29,6 +29,7 @@ docker run --name=pagamento-api --network=pagamento-network -p 8080:8080 -d \
   -e MERCADO_PAGO_EXTERNAL_ID={{mp_external_id}} \
   -e MERCADO_PAGO_TOKEN={{mp_token}} \
   -e MERCADO_PAGO_WEBHOOK_URL={{webhook}} \
+  -e PEDIDOS_URL_ATUALIZAR={{url_pedido_atualizar}} \
   -d pagamento-api
 ```
 
@@ -43,7 +44,9 @@ docker compose up -d
 
 ### Variáveis de ambiente
 
-- As variáveis estão presentes no documento já enviado por anexo nos Tech Challenges anteriores.
+- As variáveis do Mercado Pago estão presentes no documento já enviado por anexo nos Tech Challenges anteriores.
+Variável de url do pedido:
+PEDIDOS_URL_ATUALIZAR = http:{host}:8080/pedidos/status
 
 ### Executar swagger
 ```sh

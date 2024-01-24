@@ -362,7 +362,7 @@ class PagamentoControllerIT : IntegrationTest() {
         Pagamento(
             id = UUID.randomUUID().toString(),
             referenciaPedido = pedidoId,
-            dataHora = LocalDateTime.now().minusDays(1),
+            dataHora = LocalDateTime.now().minusDays(1).toString(),
             status = PagamentoStatus.APROVADO,
             qrCode = Random().nextLong().toString(),
             valorTotal = BigDecimal.TEN
