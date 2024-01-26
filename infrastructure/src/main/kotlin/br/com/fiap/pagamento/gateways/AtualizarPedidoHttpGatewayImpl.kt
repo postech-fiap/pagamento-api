@@ -45,9 +45,9 @@ class AtualizarPedidoHttpGatewayImpl(
     }
 
     data class AtualizarPedidoRequest(
-        private val referenciaPedido: String,
-        private val idPagamento: String,
-        private val statusPagamento: String
+        private val referencia_pedido: String,
+        private val id_pagamento: String,
+        private val status_pagamento: String
     )
 
     private fun buildHttpEntity(referenciaPedido: String, idPagamento: String, statusPagamento: PagamentoStatus) =
