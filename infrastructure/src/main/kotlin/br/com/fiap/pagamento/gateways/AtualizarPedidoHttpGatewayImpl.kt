@@ -23,7 +23,7 @@ class AtualizarPedidoHttpGatewayImpl(
             val response =
                 restTemplate.exchange(
                     pedidosApiEndpoint,
-                    HttpMethod.PUT,
+                    HttpMethod.PATCH,
                     buildHttpEntity(referenciaPedido, idPagamento, statusPagamento),
                     String::class.java
                 )

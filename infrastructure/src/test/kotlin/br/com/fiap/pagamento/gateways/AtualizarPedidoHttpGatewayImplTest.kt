@@ -44,7 +44,7 @@ class AtualizarPedidoHttpGatewayImplTest {
         every {
             restTemplate.exchange(
                 eq(PEDIDO_API_ENDPOINT),
-                eq(HttpMethod.PUT),
+                eq(HttpMethod.PATCH),
                 any(),
                 eq(String::class.java)
             )
@@ -59,7 +59,7 @@ class AtualizarPedidoHttpGatewayImplTest {
         verify(exactly = 1) {
             restTemplate.exchange(
                 eq(PEDIDO_API_ENDPOINT),
-                eq(HttpMethod.PUT),
+                eq(HttpMethod.PATCH),
                 any(),
                 eq(String::class.java)
             )
@@ -77,7 +77,7 @@ class AtualizarPedidoHttpGatewayImplTest {
         every {
             restTemplate.exchange(
                 eq(PEDIDO_API_ENDPOINT),
-                eq(HttpMethod.PUT),
+                eq(HttpMethod.PATCH),
                 any(),
                 eq(String::class.java)
             )
@@ -96,7 +96,7 @@ class AtualizarPedidoHttpGatewayImplTest {
         verify(exactly = 1) {
             restTemplate.exchange(
                 eq(PEDIDO_API_ENDPOINT),
-                eq(HttpMethod.PUT),
+                eq(HttpMethod.PATCH),
                 any(),
                 eq(String::class.java)
             )
@@ -115,7 +115,7 @@ class AtualizarPedidoHttpGatewayImplTest {
         every {
             restTemplate.exchange(
                 eq(PEDIDO_API_ENDPOINT),
-                eq(HttpMethod.PUT),
+                eq(HttpMethod.PATCH),
                 any(),
                 eq(String::class.java)
             )
@@ -137,7 +137,7 @@ class AtualizarPedidoHttpGatewayImplTest {
         verify(exactly = 1) {
             restTemplate.exchange(
                 eq(PEDIDO_API_ENDPOINT),
-                eq(HttpMethod.PUT),
+                eq(HttpMethod.PATCH),
                 any(),
                 eq(String::class.java)
             )
