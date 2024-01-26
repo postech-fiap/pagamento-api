@@ -15,8 +15,8 @@ Para criar um pedido e obter o qr_code de pagamento, você precisará gerar uma 
 curl --location 'http://localhost:8080/v1/pagamentos/criar' \
 --header 'Content-Type: application/json' \
 --data '{
-    "referenciaPedido": "10",
-    "numeroPedido": "11",
+    "referencia_pedido": "123",
+    "numero_pedido": "123",
     "data_hora": "2024-02-06T15:30:30Z",
     "items": [{
         "quantidade": 1,
@@ -61,17 +61,19 @@ Pagamento: PENDENTE -> APROVADO ou REPROVADO
 ```
 Exemplo:
 ```sh
-curl --location 'http://localhost:8080/v1/pagamentos/finalizar?data.id=62842452124&type=payment' \
+curl --location 'http://localhost:8080/v1/pagamentos/finalizar?data.id=71045566393&type=payment' \
 --header 'Content-Type: application/json' \
 --data '{
-    "action": "payment.created",
-    "api_version": "v1",
-    "data": { "id":"62842452124" },
-    "date_created": "2023-08-28T18:11:04Z",
-    "id": 107281993234,
-    "live_mode": true,
-    "type": "payment",
-    "user_id": "1443012156"
+      "action": "payment.created",
+      "api_version": "v1",
+      "data": {
+        "id": "71045566393"
+      },
+      "date_created": "2024-01-26T02:05:32Z",
+      "id": 110311380541,
+      "live_mode": true,
+      "type": "payment",
+      "user_id": "1443012156"
 }'
 ```
 
