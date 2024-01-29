@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    image: pagamento-api
+    container_name: pagamento-api
+    environment:
+      MONGO_DB_HOST: "${MONGO_DB_HOST}"
+      MONGO_DB_PORT: "${MONGO_DB_PORT}"
+      MONGO_DB_NAME: "${MONGO_DB_NAME}"
+      MERCADO_PAGO_USER_ID: "${MERCADO_PAGO_USER_ID}"
+      MERCADO_PAGO_EXTERNAL_ID: "${MERCADO_PAGO_EXTERNAL_ID}"
+      MERCADO_PAGO_TOKEN: "${MERCADO_PAGO_TOKEN}"
+      MERCADO_PAGO_WEBHOOK_URL: "${MERCADO_PAGO_WEBHOOK_URL}"
+    ports:
+      - "8080:8080"
+    depends_on:
+      mongo-db:
+        condition: service_healthy
+    restart: always
+    networks:
+      - pagamento-network
+
+  mongo-db:
+    container_name: pagamento-api-mongo
+    image: mongo
+    restart: always
+    environment:
+      MONGO_DB_PORT: "${MONGO_DB_PORT}"
+      MONGO_DB_NAME: "${MONGO_DB_NAME}"
+    ports:
+      - "27017:27017"
+    networks:
+      - pagamento-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:27017" ]
+
+networks:
+  pagamento-network:
+    driver: bridge

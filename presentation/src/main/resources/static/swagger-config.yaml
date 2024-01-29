@@ -1,0 +1,189 @@
+openapi: 3.0.1
+info:
+  title: Api de pagamentos
+  description: Desafio Tech Challange FIAP
+  version: 4.0.0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /v1/pagamentos/criar:
+    post:
+      tags:
+        - pagamento-controller
+      summary: Criar pagamento
+      operationId: post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PedidoCriadoRequest'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagamentoResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: string
+
+  /v1/pagamentos/finalizar:
+    post:
+      tags:
+        - pagamento-controller
+      summary: Finaliza o pagamento com status APROVADO ou REPROVADO e atualiza o pedido
+      operationId: finalizarPagamento
+      parameters:
+        - name: data.id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: type
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PagamentoCriadoRequest'
+        required: true
+      responses:
+        '200':
+          description: Ok
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PagamentoResponse'
+        '500':
+          description: Internal Server Error
+          application/json:
+            schema:
+              type: string
+
+components:
+  schemas:
+    Item:
+      required:
+        - quantidade
+        - produto
+        - valor_pago
+      properties:
+        quantidade:
+          type: integer
+          format: int64
+        produto:
+          $ref: '#/components/schemas/Produto'
+        valor_pago:
+          type: number
+    Produto:
+      required:
+        - id
+        - nome
+        - descricao
+        - categoria
+        - valor
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nome:
+          type: string
+        descricao:
+          type: string
+        categoria:
+          type: string
+        valor:
+          type: number
+    PedidoCriadoRequest:
+      type: object
+      properties:
+        referenciaPedido:
+          type: string
+        numeroPedido:
+          type: string
+        dataHora:
+          type: string
+          format: offset-date-time
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+        valorTotal:
+          type: number
+    PagamentoResponse:
+      required:
+        - data_hora
+        - qr_code
+        - status
+        - valor_total
+      type: object
+      properties:
+        id:
+          type: string
+        pedido_id:
+          type: integer
+          format: int64
+        data_hora:
+          type: string
+          format: local-date-time
+        status:
+          type: string
+          enum:
+            - PENDENTE
+            - APROVADO
+            - REPROVADO
+        qr_code:
+          type: string
+        valor_total:
+          type: number
+    DataRequest:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          type: string
+    PagamentoCriadoRequest:
+      required:
+        - action
+        - api_version
+        - data
+        - date_created
+        - id
+        - live_mode
+        - type
+        - user_id
+      type: object
+      properties:
+        action:
+          type: string
+        api_version:
+          type: string
+        data:
+          $ref: '#/components/schemas/DataRequest'
+        date_created:
+          type: string
+        id:
+          type: integer
+          format: int64
+        live_mode:
+          type: boolean
+        type:
+          type: string
+        user_id:
+          type: string
