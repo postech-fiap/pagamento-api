@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
-import org.springframework.stereotype.Component
 
 @RabbitListener(queues = [PEDIDO_CRIADO_FILA])
 class PedidoCriadoConsumer(
