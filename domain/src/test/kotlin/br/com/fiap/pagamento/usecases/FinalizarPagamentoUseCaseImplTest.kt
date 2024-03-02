@@ -54,7 +54,7 @@ class FinalizarPagamentoUseCaseImplTest {
 
         //then
         assertEquals(notificacaoPagamentoCriado.data.id, result.id)
-        assertEquals(pedidoMercadoPago.elements!![0].externalReference, result.idPedido)
+        assertEquals(pedidoMercadoPago.elements!![0].externalReference, result.idPedido.toString())
         assertEquals(pagamento.dataHora, result.dataHora)
         assertEquals(pagamento.qrCode, result.qrCode)
         assertEquals(PagamentoStatus.APROVADO, result.status)
