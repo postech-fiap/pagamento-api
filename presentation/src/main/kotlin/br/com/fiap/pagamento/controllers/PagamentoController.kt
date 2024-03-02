@@ -3,7 +3,7 @@ package br.com.fiap.pagamento.controllers
 import br.com.fiap.pagamento.adapters.interfaces.PagamentoAdapter
 import br.com.fiap.pagamento.models.Pagamento
 import br.com.fiap.pagamento.requests.PagamentoCriadoRequest
-import br.com.fiap.pagamento.requests.PedidoCriadoRequest
+import br.com.fiap.pagamento.requests.PedidoCriadoMsg
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.net.URI
@@ -17,7 +17,7 @@ class PagamentoController(
 ) {
 
     @PostMapping("/criar")
-    fun criar(@RequestBody request: PedidoCriadoRequest) =
+    fun criar(@RequestBody request: PedidoCriadoMsg) =
         ResponseEntity.created(URI.create("v1/pagamentos/criar")).body(pagamentoAdapter.criar(request.valid()))
 
     @PostMapping("/finalizar")

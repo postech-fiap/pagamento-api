@@ -1,6 +1,7 @@
 package br.com.fiap.pagamento.gateways
 
 import br.com.fiap.pagamento.dtos.MercadoPagoResponseMerchantOrders
+import br.com.fiap.pagamento.gateways.http.BuscarPagamentoPorIdHttpGatewayImpl
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension

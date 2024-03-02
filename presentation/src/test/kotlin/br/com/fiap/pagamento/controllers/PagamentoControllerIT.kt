@@ -9,7 +9,7 @@ import br.com.fiap.pagamento.models.Item
 import br.com.fiap.pagamento.models.Pagamento
 import br.com.fiap.pagamento.models.Produto
 import br.com.fiap.pagamento.requests.PagamentoCriadoRequest
-import br.com.fiap.pagamento.requests.PedidoCriadoRequest
+import br.com.fiap.pagamento.requests.PedidoCriadoMsg
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import org.junit.jupiter.api.Test
@@ -46,7 +46,7 @@ class PagamentoControllerIT : IntegrationTest() {
             .andExpect {
                 status { isCreated() }
                 jsonPath("$.id").value(pagamento.id)
-                jsonPath("$.referenciaPedido").value(pagamento.referenciaPedido)
+                jsonPath("$.referenciaPedido").value(pagamento.idPedido)
                 jsonPath("$.dataHora").value(pagamento.dataHora)
                 jsonPath("$.status").value(pagamento.status)
                 jsonPath("$.qrCode").value(pagamento.qrCode)
@@ -221,7 +221,7 @@ class PagamentoControllerIT : IntegrationTest() {
             .andExpect {
                 status { isOk() }
                 jsonPath("$.id").value(pagamento.id)
-                jsonPath("$.referenciaPedido").value(pagamento.referenciaPedido)
+                jsonPath("$.referenciaPedido").value(pagamento.idPedido)
                 jsonPath("$.dataHora").value(pagamento.dataHora)
                 jsonPath("$.status").value(pagamento.status)
                 jsonPath("$.qrCode").value(pagamento.qrCode)
@@ -336,7 +336,7 @@ class PagamentoControllerIT : IntegrationTest() {
             }
     }
 
-    private fun criarPedidoRequest() = PedidoCriadoRequest(
+    private fun criarPedidoRequest() = PedidoCriadoMsg(
         referenciaPedido = "123",
         numeroPedido = "123",
         dataHora = OffsetDateTime.now(),
@@ -361,7 +361,7 @@ class PagamentoControllerIT : IntegrationTest() {
     private fun criarPagamento(pedidoId: String) =
         Pagamento(
             id = UUID.randomUUID().toString(),
-            referenciaPedido = pedidoId,
+            idPedido = pedidoId,
             dataHora = LocalDateTime.now().minusDays(1).toString(),
             status = PagamentoStatus.APROVADO,
             qrCode = Random().nextLong().toString(),

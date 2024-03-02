@@ -36,6 +36,15 @@ services:
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:27017" ]
 
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.9-management
+    ports:
+      - "5672:5672" # Default port do servidor AMQP máquina:container
+      - "15672:15672" # Interface web
+    environment:
+      RABBITMQ_DEFAULT_USER: "${RABBITMQ_USER}"
+      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_PASS}"
 networks:
   pagamento-network:
     driver: bridge

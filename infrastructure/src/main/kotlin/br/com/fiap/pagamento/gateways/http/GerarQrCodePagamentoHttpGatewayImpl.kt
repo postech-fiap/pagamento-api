@@ -1,25 +1,24 @@
-package br.com.fiap.pagamento.gateways
+package br.com.fiap.pagamento.gateways.http
 
 import br.com.fiap.pagamento.dtos.MercadoPagoOrdemDto
 import br.com.fiap.pagamento.dtos.MercadoPagoResponseOrdemDto
+import br.com.fiap.pagamento.exceptions.IntegracaoAPIException
 import br.com.fiap.pagamento.interfaces.gateways.GerarQrCodePagamentoGateway
 import br.com.fiap.pagamento.models.Pagamento
-import br.com.fiap.pagamento.exceptions.IntegracaoAPIException
 import br.com.fiap.pagamento.models.Pedido
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.web.client.RestTemplate
-import kotlin.text.*
 
 private const val HEADER_NAME_AUTH = "Authorization"
 private const val ERROR_MESSAGE_QRCODE = "Erro de integração para gerar o pagamento. Detalhes: %s"
 
 class GerarQrCodePagamentoHttpGatewayImpl(
-    private val restTemplate: RestTemplate,
-    private val mercadoPagoApiQrCodeEndpoint: String,
-    private val mercadoPagoToken: String,
-    private val mercadoPagoWebhookUrl: String
+        private val restTemplate: RestTemplate,
+        private val mercadoPagoApiQrCodeEndpoint: String,
+        private val mercadoPagoToken: String,
+        private val mercadoPagoWebhookUrl: String
 ) : GerarQrCodePagamentoGateway {
 
     override fun executar(pedido: Pedido): Pagamento {
@@ -32,10 +31,10 @@ class GerarQrCodePagamentoHttpGatewayImpl(
 
             if (response.statusCode != HttpStatus.CREATED) {
                 throw IntegracaoAPIException(
-                    String.format(
-                        ERROR_MESSAGE_QRCODE,
-                        "[status_code: " + "${response.statusCode}"
-                    )
+                        String.format(
+                                ERROR_MESSAGE_QRCODE,
+                                "[status_code: " + "${response.statusCode}"
+                        )
                 )
             }
 
@@ -56,4 +55,3 @@ class GerarQrCodePagamentoHttpGatewayImpl(
                 HttpEntity(MercadoPagoOrdemDto.fromDto(pedido, mercadoPagoWebhookUrl), it)
             }
 }
-
