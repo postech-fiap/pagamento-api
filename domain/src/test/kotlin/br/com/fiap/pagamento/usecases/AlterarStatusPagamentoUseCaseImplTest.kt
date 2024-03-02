@@ -47,24 +47,24 @@ class AlterarStatusPagamentoUseCaseImplTest {
                 pagamento.copy(status = novoStatus)
 
         //when
-        val result = target.executar(pedidoId.toString(), novoStatus)
+        val result = target.executar(pedidoId, novoStatus)
 
         //then
         assertEquals(pagamento.id, result.id)
-        assertEquals(pagamento.referenciaPedido, result.referenciaPedido)
+        assertEquals(pagamento.idPedido, result.idPedido)
         assertEquals(pagamento.dataHora, result.dataHora)
         assertEquals(pagamento.qrCode, result.qrCode)
         assertEquals(novoStatus, result.status)
         assertEquals(pagamento.valorTotal, result.valorTotal)
 
-        verify(exactly = 1) { consultarPagamentoUseCase.executar(pedidoId.toString()) }
+        verify(exactly = 1) { consultarPagamentoUseCase.executar(pedidoId) }
         verify(exactly = 1) { pagamentoRepository.alterarStatusPagamento(pagamento, novoStatus) }
     }
 
     private fun criarPagamento(pedidoId: Long) =
             Pagamento(
                     id = UUID.randomUUID().toString(),
-                referenciaPedido = pedidoId.toString(),
+                    idPedido = pedidoId,
                     dataHora = OffsetDateTime.now().minusDays(1).toString(),
                     status = PagamentoStatus.APROVADO,
                     qrCode = Random().nextLong().toString(),

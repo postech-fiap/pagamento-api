@@ -40,17 +40,17 @@ class ConsultarPagamentoUseCaseImplTest {
         every { pagamentoRepository.consultarPorPedido(any()) } returns pagamento
 
         //when
-        val result = target.executar(pedidoId.toString())
+        val result = target.executar(pedidoId)
 
         //then
         assertEquals(pagamento.id, result.id)
-        assertEquals(pagamento.referenciaPedido, result.referenciaPedido)
+        assertEquals(pagamento.idPedido, result.idPedido)
         assertEquals(pagamento.dataHora, result.dataHora)
         assertEquals(pagamento.qrCode, result.qrCode)
         assertEquals(pagamento.status, result.status)
         assertEquals(pagamento.valorTotal, result.valorTotal)
 
-        verify(exactly = 1) { pagamentoRepository.consultarPorPedido(pedidoId.toString()) }
+        verify(exactly = 1) { pagamentoRepository.consultarPorPedido(pedidoId) }
     }
 
     @Test
@@ -62,19 +62,19 @@ class ConsultarPagamentoUseCaseImplTest {
 
         //when-then
         val exception = assertThrows(RecursoNaoEncontradoException::class.java) {
-            target.executar(pedidoId.toString())
+            target.executar(pedidoId)
         }
 
         //then
         assertEquals("Pagamento não encontrado", exception.message);
 
-        verify(exactly = 1) { pagamentoRepository.consultarPorPedido(pedidoId.toString()) }
+        verify(exactly = 1) { pagamentoRepository.consultarPorPedido(pedidoId) }
     }
 
     private fun criarPagamento(pedidoId: Long) =
         Pagamento(
             id = UUID.randomUUID().toString(),
-            referenciaPedido = pedidoId.toString(),
+            idPedido = pedidoId,
             dataHora = OffsetDateTime.now().minusDays(1).toString(),
             status = PagamentoStatus.APROVADO,
             qrCode = Random().nextLong().toString(),

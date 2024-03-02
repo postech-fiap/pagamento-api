@@ -7,5 +7,5 @@ interface PagamentoRepository {
 
     fun alterarStatusPagamento(pagamento: Pagamento, status: PagamentoStatus): Pagamento
     fun salvar(pagamento: Pagamento): Pagamento
-    fun consultarPorPedido(referenciaPedido: String): Pagamento?
+    fun consultarPorPedido(idPedido: Long): Pagamento?
 }
