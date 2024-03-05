@@ -55,8 +55,8 @@ jobs:
           kubectl apply -f ./kubernetes/api/service.yaml
           kubectl apply -f ./kubernetes/db/pod.yaml
           kubectl apply -f ./kubernetes/db/service.yaml
-          kubectl apply -f ./kubernetes/rabbit_mq/pod.yaml
-          kubectl apply -f ./kubernetes/rabbit_mq/service.yaml
+#          kubectl apply -f ./kubernetes/rabbit_mq/pod.yaml
+#          kubectl apply -f ./kubernetes/rabbit_mq/service.yaml
         if: success()
 
       - name: Test connection

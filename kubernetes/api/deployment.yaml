@@ -47,7 +47,7 @@ spec:
                   name: mp
                   key: webhook-url
             - name: RABBITMQ_HOST
-              value: "pagamento-rabbitmq-service"
+              value: "production-rabbitmq-service"
             - name: RABBITMQ_PORT
               value: "5672"
             - name: RABBITMQ_USER
