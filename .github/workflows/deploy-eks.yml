@@ -30,7 +30,7 @@ jobs:
       - name: Configure kubeconfig with cluster aws
         run: |
           echo "Configuring EKS cluster"
-          aws eks update-kubeconfig --name fiap-eks-pagamento --region us-east-1
+          aws eks update-kubeconfig --name delivery --region us-east-1
         if: success()
 
       - name: Install kubectl
