@@ -57,7 +57,7 @@ class AppBeansConfig(
     @Bean
     fun atualizarPedidoGateway() = AtualizarPedidoHttpGatewayImpl(
         restTemplate,
-        endpointConfig.pedidosApiAtualizarEndpoint
+        "pedidosApiAtualizarEndpoint"
     )
 
     @Bean
