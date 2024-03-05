@@ -13,8 +13,10 @@ services:
       MERCADO_PAGO_EXTERNAL_ID: "${MERCADO_PAGO_EXTERNAL_ID}"
       MERCADO_PAGO_TOKEN: "${MERCADO_PAGO_TOKEN}"
       MERCADO_PAGO_WEBHOOK_URL: "${MERCADO_PAGO_WEBHOOK_URL}"
-      RABBITMQ_DEFAULT_USER: "${RABBITMQ_USER}"
-      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_PASS}"
+      RABBITMQ_HOST: "${RABBITMQ_HOST}"
+      RABBITMQ_PORT: "${RABBITMQ_PORT}"
+      RABBITMQ_USER: "${RABBITMQ_USER}"
+      RABBITMQ_PASS: "${RABBITMQ_PASS}"
     ports:
       - "8080:8080"
     depends_on:
@@ -45,8 +47,10 @@ services:
       - "5672:5672" # Default port do servidor AMQP máquina:container
       - "15672:15672" # Interface web
     environment:
-      RABBITMQ_DEFAULT_USER: "${RABBITMQ_USER}"
-      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_PASS}"
+      RABBITMQ_HOST: "${RABBITMQ_HOST}"
+      RABBITMQ_PORT: "${RABBITMQ_PORT}"
+      RABBITMQ_USER: "${RABBITMQ_USER}"
+      RABBITMQ_PASS: "${RABBITMQ_PASS}"
 networks:
   pagamento-network:
     driver: bridge
