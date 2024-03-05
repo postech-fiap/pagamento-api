@@ -5,6 +5,7 @@ import br.com.fiap.pagamento.constants.PEDIDO_CRIADO_FILA
 import br.com.fiap.pagamento.requests.PedidoCriadoMsg
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 
@@ -13,10 +14,13 @@ class PedidoCriadoConsumer(
         private val pagamentoAdapter: PagamentoAdapter,
         private val objectMapper: ObjectMapper
 ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     @RabbitHandler
     private fun consumidor(mensagem: String) {
 
         val pedidoDto = objectMapper.readValue<PedidoCriadoMsg>(mensagem)
-        pagamentoAdapter.criar(pedidoDto.valid())
+        val result = pagamentoAdapter.criar(pedidoDto.valid())
+        logger.info("Result: {}", result)
     }
 }
