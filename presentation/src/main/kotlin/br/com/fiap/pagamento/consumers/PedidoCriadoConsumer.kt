@@ -18,9 +18,11 @@ class PedidoCriadoConsumer(
 
     @RabbitHandler
     private fun consumidor(mensagem: String) {
+        println("Mensagem recebida: $mensagem")
 
         val pedidoDto = objectMapper.readValue<PedidoCriadoMsg>(mensagem)
         val result = pagamentoAdapter.criar(pedidoDto.valid())
-        logger.info("Result: {}", result)
+
+        println("Pagamento result: $result")
     }
 }
