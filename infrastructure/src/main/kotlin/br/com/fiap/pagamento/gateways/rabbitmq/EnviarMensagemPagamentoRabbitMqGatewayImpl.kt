@@ -19,10 +19,9 @@ class EnviarMensagemPagamentoRabbitMqGatewayImpl(
 
     override fun executar(nomeDaFila: String, mensagem: PagamentoMsg) {
         try {
-            val json = objectMapper.writeValueAsString(mensagem)
-            println("Enviando mensagem: $json")
-            rabbitTemplate.convertAndSend(pagamentoFinalizadoQueue.name, json)
-            println("Mensagem enviada: $json")
+            println("Enviando mensagem: $mensagem")
+            rabbitTemplate.convertAndSend(pagamentoFinalizadoQueue.name, mensagem)
+            println("Mensagem enviada: $mensagem")
         } catch (ex: Exception) {
             throw ProducerMessageException(String.format(ERROR_MESSAGE, "${ex.message} - ${ex.cause}"))
         }
