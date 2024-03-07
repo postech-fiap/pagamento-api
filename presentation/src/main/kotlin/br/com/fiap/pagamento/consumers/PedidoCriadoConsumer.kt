@@ -14,7 +14,6 @@ class PedidoCriadoConsumer(
         private val pagamentoAdapter: PagamentoAdapter,
         private val objectMapper: ObjectMapper
 ) {
-    private val logger = LoggerFactory.getLogger(javaClass)
 
     @RabbitHandler
     private fun consumidor(mensagem: String) {
