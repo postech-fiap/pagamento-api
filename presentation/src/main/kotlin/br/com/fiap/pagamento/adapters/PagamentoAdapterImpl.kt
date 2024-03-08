@@ -20,7 +20,7 @@ class PagamentoAdapterImpl(
 
     override fun criar(request: PedidoCriadoMsg): Pagamento {
         return try {
-            consultarPagamentoUseCase.executar(request.idPedido)
+            consultarPagamentoUseCase.executar(request.idPedido!!)
             throw RecursoJaExisteException("Pagamento já existe para o id do pedido: ${request.idPedido}")
         } catch (ex: RecursoNaoEncontradoException) {
             gerarQrCodePagamentoUseCase.executar(request.toModel())

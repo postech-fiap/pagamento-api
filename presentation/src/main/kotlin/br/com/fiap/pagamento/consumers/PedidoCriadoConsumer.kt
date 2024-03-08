@@ -4,23 +4,19 @@ import br.com.fiap.pagamento.adapters.interfaces.PagamentoAdapter
 import br.com.fiap.pagamento.constants.PEDIDO_CRIADO_FILA
 import br.com.fiap.pagamento.requests.PedidoCriadoMsg
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
-import org.slf4j.LoggerFactory
-import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.stereotype.Component
 
-@RabbitListener(queues = [PEDIDO_CRIADO_FILA])
+@Component
 class PedidoCriadoConsumer(
         private val pagamentoAdapter: PagamentoAdapter,
-        private val objectMapper: ObjectMapper
 ) {
 
-    @RabbitHandler
-    private fun consumidor(mensagem: String) {
+    @RabbitListener(queues = [PEDIDO_CRIADO_FILA])
+    private fun consumidor(mensagem: PedidoCriadoMsg) {
         println("Mensagem recebida: $mensagem")
 
-        val pedidoDto = objectMapper.readValue<PedidoCriadoMsg>(mensagem)
-        val result = pagamentoAdapter.criar(pedidoDto.valid())
+        val result = pagamentoAdapter.criar(mensagem.valid())
 
         println("Pagamento result: $result")
     }
