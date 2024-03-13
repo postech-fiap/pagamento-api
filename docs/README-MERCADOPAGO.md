@@ -9,7 +9,8 @@ Para criar um pedido e obter o qr_code de pagamento, você precisará gerar uma 
 1. Crie uma webhook de teste, usando o https://webhook.site/, inclua a url como valor da variável de ambiente: $MERCADO_PAGO_WEBHOOK_URL
 ![Alt text](https://github.com/Everton91Almeida/fiap-gerenciamento-pedidos/assets/42806807/7d6ea464-9dbd-489c-9165-ee017e7c49ac)
 
-2. Crie um pagamento, conforme exemplo abaixo:
+2. Crie um pagamento, conforme exemplo abaixo: 
+*** Atualmente este endpoint foi deprecado, pois agora a criação se dará por meio do consumer de pedido-criado, porém o manteremos na documentação para fins didáticos
 
 ```sh
 curl --location 'http://localhost:8080/v1/pagamentos/criar' \

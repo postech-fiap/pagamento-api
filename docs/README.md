@@ -16,6 +16,16 @@ docker run --name=pagamento-api-mongo --network=pagamento-network -p 27017:27017
 -e MONGO_DB_PORT=27017 -e MONGO_DB_NAME=pagamento_db -d mongo
 ```
 
+Subir o container do rabbit mq:
+```bash
+docker run --name=rabbit-mq --network=pagamento-network -p 5672:5672 -p 15672:15672 -d \
+  -e RABBITMQ_HOST=localhost \
+  -e RABBITMQ_PORT=5672 \
+  -e RABBITMQ_USER={{rabbit_user}} \
+  -e RABBITMQ_PASS={{rabbit_pass}} \
+  -d rabbitmq:3.9-management
+```
+
 Build da imagem da api:
 ```bash
 docker build -t pagamento-api:latest .
@@ -24,22 +34,22 @@ docker build -t pagamento-api:latest .
 Subir o container da api:
 ```bash
 docker run --name=pagamento-api --network=pagamento-network -p 8080:8080 -d \
-  -e MONGO_DB_HOST=pagamento-api-mongo -e MONGO_DB_PORT=27017 -e MONGO_DB_NAME=pagamento_db \
+  -e MONGO_DB_HOST=pagamento-api-mongo \
+  -e MONGO_DB_PORT=27017 \
+  -e MONGO_DB_NAME=pagamento_db \
   -e MERCADO_PAGO_USER_ID={{mp_user}} \
   -e MERCADO_PAGO_EXTERNAL_ID={{mp_external_id}} \
-  -e MERCADO_PAGO_TOKEN={{mp_token}} \
+  -e MERCADO_PAGO_TOKEN={{mp_token}}  \
   -e MERCADO_PAGO_WEBHOOK_URL={{webhook}} \
+  -e RABBITMQ_HOST=rabbit-mq \
+  -e RABBITMQ_PORT=5672 \
+  -e RABBITMQ_USER={{rabbit_user}} \
+  -e RABBITMQ_PASS={{rabbit_pass}} \
   -d pagamento-api
 ```
 
 ## Executando com Docker Compose
-Com o `docker` instalado, execute o comando:
-
-```bash
-MONGO_DB_HOST={{db_host}} MONGO_DB_PORT={{db_port}} MONGO_DB_NAME=pagamento_db \
-MERCADO_PAGO_USER_ID={{mp_user}} MERCADO_PAGO_EXTERNAL_ID={{mp_external_id}} MERCADO_PAGO_TOKEN={{mp_token}} MERCADO_PAGO_WEBHOOK_URL={{webhook}} \
-docker compose up -d
-```
+Com o `docker` instalado, execute o arquivo de docker-compose.yml, substituindo as envs pelos valores corretos.
 
 ### Variáveis de ambiente
 
@@ -51,3 +61,23 @@ curl --location 'http://localhost:8080/swagger-ui/index.html'
 ```
 
 ## [Integração com Mercado Pago Api](README-MERCADOPAGO.md)
+
+## Padrão SAGA Coreografada
+
+Este projeto faz uso da SAGA coreografada.
+
+Foi escolhida essa estratégia porque o escopo geral da solução é simples e pequeno, sem a necessidade de um orquestrador 
+mais complexo para gerenciar as chamadas.
+
+Assim, neste fluxo não realizamos comunicações diretas aos serviços de pedido, mas sim, consumimos os eventos de criação de um pedido e publicamos o evento de status de pagamento. 
+Logo, quando é criado um pedido, gera-se o qr code de pagamento com status PENDENTE, e após efetuar o pagamento, recebemos o status via webhook 
+e finalizamos como APROVADO ou REPROVADO.
+
+### Desenho da arquitetura
+[Arquitetura](https://app.diagrams.net/#G1fBtO_R6lhYWuJQXfhlA_UmDWQCe31APo#%7B%22pageId%22%3A%228_fkULkPsgVTex09hIS1%22%7D)
+
+## Relatórios OWASP ZAP
+
+## Relatórios RIPD
+
+
