@@ -1,6 +1,7 @@
 package br.com.fiap.pagamento.config
 
 import br.com.fiap.pagamento.constants.PAGAMENTO_FINALIZADO_FILA
+import br.com.fiap.pagamento.constants.PEDIDO_CRIADO_FILA
 import org.springframework.amqp.core.AmqpAdmin
 import org.springframework.amqp.core.Queue
 import org.springframework.amqp.rabbit.core.RabbitTemplate
@@ -24,4 +25,15 @@ class RabbitMqConfig(
     fun pagamentoFinalizadoCriarFila(pagamentoFinalizadoQueue: Queue): String? {
         return amqpAdmin.declareQueue(pagamentoFinalizadoQueue)
     }
+
+    // ========= Descomentar para subir a app local // =========
+//    @Bean
+//    fun pedidoCriadoQueue(): Queue {
+//        return Queue(PEDIDO_CRIADO_FILA, false)
+//    }
+//
+//    @Bean
+//    fun pedidoCriado(pedidoCriadoQueue: Queue): String? {
+//        return amqpAdmin.declareQueue(pedidoCriadoQueue)
+//    }
 }

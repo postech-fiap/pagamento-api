@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 class PagamentoFinalizadoService(
     private val alterarStatusPagamentoUseCase: AlterarStatusPagamentoUseCase,
     private val enviarMensagemPagamentoGateway: EnviarMensagemPagamentoGateway,
-    ) : PagamentoFinalizadoServiceI {
+) : PagamentoFinalizadoServiceI {
 
     override fun atualizaEPostaMensagem(idPedido: Long, pagamentoStatus: PagamentoStatus): Pagamento {
         val pagamentoComNovoStatus = alterarStatusPagamentoUseCase.executar(
