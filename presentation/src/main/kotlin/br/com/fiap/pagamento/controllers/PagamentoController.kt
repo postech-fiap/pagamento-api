@@ -16,6 +16,12 @@ class PagamentoController(
     private val pagamentoAdapter: PagamentoAdapter
 ) {
 
+    @PostMapping("/criar")
+    fun criar(@RequestBody request: PedidoCriadoMsg) =
+        ResponseEntity.created(URI.create("v1/pagamentos/criar")).body(
+            pagamentoAdapter.criar(request.valid())
+        )
+
     @PostMapping("/finalizar")
     fun finalizar(
         @RequestParam("data.id") dataId: String,
