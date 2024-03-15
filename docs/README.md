@@ -65,19 +65,10 @@ curl --location 'http://localhost:8080/swagger-ui/index.html'
 ## Padrão SAGA Coreografada
 
 Este projeto faz uso da SAGA coreografada.
-
-Foi escolhida essa estratégia porque o escopo geral da solução é simples e pequeno, sem a necessidade de um orquestrador 
-mais complexo para gerenciar as chamadas.
-
-Assim, neste fluxo não realizamos comunicações diretas aos serviços de pedido, mas sim, consumimos os eventos de criação de um pedido e publicamos o evento de status de pagamento. 
-Logo, quando é criado um pedido, gera-se o qr code de pagamento com status PENDENTE, e após efetuar o pagamento, recebemos o status via webhook 
-e finalizamos como APROVADO ou REPROVADO.
+Mais detalhes da justificativa, acessar o link no documento compartilhado.
 
 ### Desenho da arquitetura
-[Arquitetura](https://app.diagrams.net/#G1fBtO_R6lhYWuJQXfhlA_UmDWQCe31APo#%7B%22pageId%22%3A%228_fkULkPsgVTex09hIS1%22%7D)
+Acessar o link no documento compartilhado.
 
 ## Relatórios OWASP ZAP
-
-## Relatórios RIPD
-
-
+Acessar o link no documento compartilhado.
