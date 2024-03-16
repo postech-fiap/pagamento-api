@@ -72,7 +72,7 @@ jobs:
 
   docker-app-image:
     runs-on: ubuntu-latest
-    needs: build
+    needs: sonar-cloud
     steps:
       - name: Checkout / copy repo app
         uses: actions/checkout@v4
