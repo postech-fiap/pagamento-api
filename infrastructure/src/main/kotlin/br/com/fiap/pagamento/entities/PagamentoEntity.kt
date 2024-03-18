@@ -11,8 +11,8 @@ import java.math.BigDecimal
 data class PagamentoEntity(
     @Id
     val id: String? = null,
-    @Field("referencia_pedido")
-    val referenciaPedido: String,
+    @Field("id_pedido")
+    val idPedido: Long,
     @Field("data_hora")
     val dataHora: String,
     val status: PagamentoStatus,
@@ -21,13 +21,13 @@ data class PagamentoEntity(
     @Field("valor_total")
     val valorTotal: BigDecimal,
 ) {
-    fun toModel() = Pagamento(id, referenciaPedido, dataHora, status, qrCode, valorTotal)
+    fun toModel() = Pagamento(id, idPedido, dataHora, status, qrCode, valorTotal)
 
     companion object {
         fun fromModel(pagamento: Pagamento) = PagamentoEntity(
             id = pagamento.id,
-            referenciaPedido = pagamento.referenciaPedido,
-            dataHora = pagamento.dataHora.toString(),
+            idPedido = pagamento.idPedido,
+            dataHora = pagamento.dataHora,
             status = pagamento.status,
             qrCode = pagamento.qrCode,
             valorTotal = pagamento.valorTotal

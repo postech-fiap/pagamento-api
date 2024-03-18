@@ -1,11 +1,10 @@
-package br.com.fiap.pagamento.repositories
+package br.com.fiap.pagamento.repositories.mongo
 
 import br.com.fiap.pagamento.entities.PagamentoEntity
 import br.com.fiap.pagamento.enums.PagamentoStatus
-import br.com.fiap.pagamento.interfaces.PagamentoRepository
 import br.com.fiap.pagamento.exceptions.BaseDeDadosException
+import br.com.fiap.pagamento.interfaces.PagamentoRepository
 import br.com.fiap.pagamento.models.Pagamento
-import br.com.fiap.pagamento.repositories.mongo.PagamentoMongoRepository
 
 private const val ERROR_MESSAGE_UPDATE_STATUS = "Erro ao atualizar o status do pagamento. Detalhes: %s"
 private const val ERROR_MESSAGE_SAVE = "Erro ao salvar o pagamento. Detalhes: %s"
@@ -25,9 +24,9 @@ class PagamentoRepositoryImpl(private val pagamentoMongoRepository: PagamentoMon
         }
     }
 
-    override fun consultarPorPedido(referenciaPedido: String): Pagamento? {
+    override fun consultarPorPedido(idPedido: Long): Pagamento? {
         return try {
-            pagamentoMongoRepository.findByPedidoId(referenciaPedido)?.toModel()
+            pagamentoMongoRepository.findByPedidoId(idPedido)?.toModel()
         } catch (ex: Exception) {
             throw BaseDeDadosException(String.format(ERROR_MESSAGE_FIND, ex.message))
         }

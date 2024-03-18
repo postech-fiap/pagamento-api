@@ -9,27 +9,41 @@ Para criar um pedido e obter o qr_code de pagamento, você precisará gerar uma 
 1. Crie uma webhook de teste, usando o https://webhook.site/, inclua a url como valor da variável de ambiente: $MERCADO_PAGO_WEBHOOK_URL
 ![Alt text](https://github.com/Everton91Almeida/fiap-gerenciamento-pedidos/assets/42806807/7d6ea464-9dbd-489c-9165-ee017e7c49ac)
 
-2. Crie um pagamento, conforme exemplo abaixo:
+2. Crie um pagamento, conforme exemplo abaixo: 
+*** Agora a criação se dará por meio do consumer de pedido-criado, porém o manteremos o endpoint na aplicação para fins de testes
 
 ```sh
 curl --location 'http://localhost:8080/v1/pagamentos/criar' \
 --header 'Content-Type: application/json' \
 --data '{
-    "referencia_pedido": "123",
-    "numero_pedido": "123",
+    "id_pedido": 5,
+    "numero_pedido": "12322",
     "data_hora": "2024-02-06T15:30:30Z",
-    "items": [{
-        "quantidade": 1,
-        "produto": {
-            "id": 123,
-            "nome": "produto",
-            "descricao": "descricao",
-            "categoria": "LANCHE",
-            "valor": 10
+    "items": [
+        {
+            "quantidade": 2,
+            "produto": {
+                "id": 123,
+                "nome": "produto",
+                "descricao": "descricao",
+                "categoria": "LANCHE",
+                "valor": 10
+            },
+            "valor_pago": 20
         },
-        "valor_pago": 10
-    }],
-     "valor_total": 10
+        {
+            "quantidade": 1,
+            "produto": {
+                "id": 123,
+                "nome": "produto",
+                "descricao": "descricao",
+                "categoria": "LANCHE",
+                "valor": 10
+            },
+            "valor_pago": 10
+        }
+    ],
+     "valor_total": 30
 }'
 ```
 

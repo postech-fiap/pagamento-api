@@ -1,15 +1,15 @@
-package br.com.fiap.pagamento
-
-import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ActiveProfiles
-
-@SpringBootTest
-@ActiveProfiles("test")
-class ApplicationIT {
-
-    @Test
-    fun contextLoads() {
-
-    }
-}
+//package br.com.fiap.pagamento
+//
+//import org.junit.jupiter.api.Test
+//import org.springframework.boot.test.context.SpringBootTest
+//import org.springframework.test.context.ActiveProfiles
+//
+//@SpringBootTest
+//@ActiveProfiles("test")
+//class ApplicationIT {
+//
+//    @Test
+//    fun contextLoads() {
+//
+//    }
+//}

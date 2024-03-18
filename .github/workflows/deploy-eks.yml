@@ -8,6 +8,8 @@ env:
   mercado_pago_external_id: ${{secrets.MERCADO_PAGO_EXTERNAL_ID}}
   mercado_pago_token: ${{secrets.MERCADO_PAGO_TOKEN}}
   mercado_pago_webhook_url: ${{secrets.MERCADO_PAGO_WEBHOOK_URL}}
+  user_rabbitmq: ${{secrets.RABBITMQ_USER}}
+  password_rabbitmq: ${{secrets.RABBITMQ_PASS}}
 
 jobs:
 
@@ -28,7 +30,7 @@ jobs:
       - name: Configure kubeconfig with cluster aws
         run: |
           echo "Configuring EKS cluster"
-          aws eks update-kubeconfig --name fiap-eks-pagamento --region us-east-1
+          aws eks update-kubeconfig --name delivery --region us-east-1
         if: success()
 
       - name: Install kubectl
@@ -41,7 +43,9 @@ jobs:
       - name: Configuring Secrets on Kubernetes
         run: |
           kubectl delete secret mp --ignore-not-found
+          kubectl delete secret pagamento-rabbitmq --ignore-not-found
           kubectl create secret generic mp --from-literal=user-id=${{env.mercado_pago_user_id}} --from-literal=external-id=${{env.mercado_pago_external_id}} --from-literal=token=${{env.mercado_pago_token}} --from-literal=webhook-url=${{env.mercado_pago_webhook_url}}
+          kubectl create secret generic pagamento-rabbitmq --from-literal=user=${{env.user_rabbitmq}} --from-literal=password=${{env.password_rabbitmq}}
         if: success()
 
       - name: Deploy Kubernetes
@@ -51,6 +55,8 @@ jobs:
           kubectl apply -f ./kubernetes/api/service.yaml
           kubectl apply -f ./kubernetes/db/pod.yaml
           kubectl apply -f ./kubernetes/db/service.yaml
+#          kubectl apply -f ./kubernetes/rabbit_mq/pod.yaml
+#          kubectl apply -f ./kubernetes/rabbit_mq/service.yaml
         if: success()
 
       - name: Test connection

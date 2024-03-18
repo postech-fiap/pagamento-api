@@ -1,6 +1,7 @@
 package br.com.fiap.pagamento.gateways
 
 import br.com.fiap.pagamento.enums.PagamentoStatus
+import br.com.fiap.pagamento.gateways.http.AtualizarPedidoHttpGatewayImpl
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension

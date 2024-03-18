@@ -13,6 +13,4 @@ class EndpointConfig(
     val mercadoPagotoken: String,
     @Value("\${secrets.mercado-pago.webhook-url}")
     val mercadoPagowebhookUrl: String,
-    @Value("\${pedidos-api.atualizar}")
-    val pedidosApiAtualizarEndpoint: String,
 )
