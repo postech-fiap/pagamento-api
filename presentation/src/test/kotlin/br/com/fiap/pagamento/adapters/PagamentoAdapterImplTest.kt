@@ -11,7 +11,7 @@ import br.com.fiap.pagamento.models.Item
 import br.com.fiap.pagamento.models.Pagamento
 import br.com.fiap.pagamento.models.Produto
 import br.com.fiap.pagamento.requests.PagamentoCriadoRequest
-import br.com.fiap.pagamento.requests.PedidoCriadoRequest
+import br.com.fiap.pagamento.requests.PedidoCriadoMsg
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -55,10 +55,10 @@ class PagamentoAdapterImplTest {
     @Test
     fun `deve criar o pagamento com sucesso quando nao existir`() {
         //given
-        val pedidoId = "1"
+        val pedidoId = 1L
         val pagamento = criarPagamento(pedidoId)
-        val pedidoCriadoRequest = PedidoCriadoRequest(
-            referenciaPedido = pedidoId,
+        val pedidoCriadoMsg = PedidoCriadoMsg(
+            idPedido = pedidoId,
             numeroPedido = "123",
             dataHora = OffsetDateTime.now(),
             items = listOf(criarItem(), criarItem()),
@@ -70,11 +70,11 @@ class PagamentoAdapterImplTest {
         every { pagamentoRepository.salvar(any()) } returns pagamento
 
         //when
-        val result = target.criar(pedidoCriadoRequest)
+        val result = target.criar(pedidoCriadoMsg)
 
         //then
         assertEquals(pagamento.id, result.id)
-        assertEquals(pagamento.referenciaPedido, result.referenciaPedido)
+        assertEquals(pagamento.idPedido, result.idPedido)
         assertEquals(pagamento.dataHora, result.dataHora)
         assertEquals(pagamento.qrCode, result.qrCode)
         assertEquals(pagamento.status, result.status)
@@ -88,10 +88,10 @@ class PagamentoAdapterImplTest {
     @Test
     fun `deve lancar uma exception ao criar o pagamento quando ele ja existir`() {
         //given
-        val pedidoId = "1"
+        val pedidoId = 1L
         val pagamento = criarPagamento(pedidoId)
-        val pedidoCriadoRequest = PedidoCriadoRequest(
-            referenciaPedido = pedidoId,
+        val pedidoCriadoMsg = PedidoCriadoMsg(
+            idPedido = pedidoId,
             numeroPedido = "123",
             dataHora = OffsetDateTime.now(),
             items = listOf(criarItem(), criarItem()),
@@ -102,11 +102,11 @@ class PagamentoAdapterImplTest {
 
         //when-then
         val exception = assertThrows(RecursoJaExisteException::class.java) {
-            target.criar(pedidoCriadoRequest)
+            target.criar(pedidoCriadoMsg)
         }
 
         //then
-        assertEquals("Pagamento já existe para o pedido com referencia externa: $pedidoId", exception.message);
+        assertEquals("Pagamento já existe para o id do pedido: $pedidoId", exception.message);
 
         verify(exactly = 1) { consultarPagamentoUseCase.executar(pedidoId) }
         verify(exactly = 0) { gerarQrCodePagamentoUseCase.executar(any()) }
@@ -117,7 +117,7 @@ class PagamentoAdapterImplTest {
     fun `deve finalizar o pagamento com sucesso`() {
         //given
         val pagamentoId = 1L
-        val pedidoId = "1"
+        val pedidoId = 1L
         val pagamento = criarPagamento(pedidoId)
 
         val pagamentoCriadoRequest = pagamentoCriadoRequest(pagamentoId)
@@ -129,7 +129,7 @@ class PagamentoAdapterImplTest {
 
         //then
         assertEquals(pagamento.id, result.id)
-        assertEquals(pagamento.referenciaPedido, result.referenciaPedido)
+        assertEquals(pagamento.idPedido, result.idPedido)
         assertEquals(pagamento.dataHora, result.dataHora)
         assertEquals(pagamento.qrCode, result.qrCode)
         assertEquals(pagamento.status, result.status)
@@ -165,10 +165,10 @@ class PagamentoAdapterImplTest {
         valor = BigDecimal(10)
     )
 
-    private fun criarPagamento(pedidoId: String) =
+    private fun criarPagamento(pedidoId: Long) =
         Pagamento(
             id = UUID.randomUUID().toString(),
-            referenciaPedido = pedidoId,
+            idPedido = pedidoId,
             dataHora = LocalDateTime.now().minusDays(1).toString(),
             status = PagamentoStatus.APROVADO,
             qrCode = Random().nextLong().toString(),

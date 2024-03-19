@@ -31,7 +31,7 @@ data class MercadoPagoOrdemDto(
     companion object {
         fun fromDto(pedido: Pedido, webhookUrl: String) =
             MercadoPagoOrdemDto(
-                externalReference = pedido.referenciaPedido,
+                externalReference = pedido.idPedido.toString(),
                 totalAmount = pedido.valorTotal,
                 items = pedido.items.map {
                     MercadoPagoItensDto(

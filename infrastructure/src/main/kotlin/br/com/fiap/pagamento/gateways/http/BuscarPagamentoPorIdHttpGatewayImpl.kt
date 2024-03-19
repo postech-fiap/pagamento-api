@@ -1,9 +1,9 @@
-package br.com.fiap.pagamento.gateways
+package br.com.fiap.pagamento.gateways.http
 
 import br.com.fiap.pagamento.dtos.MercadoPagoResponseMerchantOrders
+import br.com.fiap.pagamento.exceptions.IntegracaoAPIException
 import br.com.fiap.pagamento.interfaces.gateways.BuscarPagamentoPorIdGateway
 import br.com.fiap.pagamento.models.mercadoPago.MerchantOrders
-import br.com.fiap.pagamento.exceptions.IntegracaoAPIException
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -15,9 +15,9 @@ private const val HEADER_NAME_AUTH = "Authorization"
 private const val ERROR_MESSAGE = "Erro de integração para buscar o pagamento. Detalhes: %s"
 
 class BuscarPagamentoPorIdHttpGatewayImpl(
-    private val restTemplate: RestTemplate,
-    private val mercadoPagoApiMerchantOrdersPagamento: String,
-    private val mercadoPagoToken: String
+        private val restTemplate: RestTemplate,
+        private val mercadoPagoApiMerchantOrdersPagamento: String,
+        private val mercadoPagoToken: String
 ) : BuscarPagamentoPorIdGateway {
 
     override fun executar(id: String): MerchantOrders {
@@ -33,10 +33,10 @@ class BuscarPagamentoPorIdHttpGatewayImpl(
 
             if (response.statusCode != HttpStatus.OK) {
                 throw IntegracaoAPIException(
-                    String.format(
-                        ERROR_MESSAGE,
-                        "[status_code: " + "${response.statusCode}"
-                    )
+                        String.format(
+                                ERROR_MESSAGE,
+                                "[status_code: " + "${response.statusCode}"
+                        )
                 )
             }
 

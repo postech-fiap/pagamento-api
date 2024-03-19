@@ -5,7 +5,7 @@ metadata:
   labels:
     app: pagamento-api-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: pagamento-api
@@ -46,6 +46,20 @@ spec:
                 secretKeyRef:
                   name: mp
                   key: webhook-url
+            - name: RABBITMQ_HOST
+              value: "production-rabbitmq-service"
+            - name: RABBITMQ_PORT
+              value: "5672"
+            - name: RABBITMQ_USER
+              valueFrom:
+                secretKeyRef:
+                  name: pagamento-rabbitmq
+                  key: user
+            - name: RABBITMQ_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: pagamento-rabbitmq
+                  key: password
           readinessProbe:
             httpGet:
               path: /ping

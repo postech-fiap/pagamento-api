@@ -14,6 +14,6 @@ data class MercadoPagoResponseOrdemDto(
         status = PagamentoStatus.PENDENTE,
         qrCode = qrData,
         valorTotal = pedido.valorTotal,
-        referenciaPedido = pedido.referenciaPedido
+        idPedido = pedido.idPedido
     )
 }

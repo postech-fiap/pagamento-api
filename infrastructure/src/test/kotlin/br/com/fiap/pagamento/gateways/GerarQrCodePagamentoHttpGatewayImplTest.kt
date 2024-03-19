@@ -2,6 +2,7 @@ package br.com.fiap.pagamento.gateways
 
 import br.com.fiap.pagamento.dtos.MercadoPagoResponseOrdemDto
 import br.com.fiap.pagamento.enums.PagamentoStatus
+import br.com.fiap.pagamento.gateways.http.GerarQrCodePagamentoHttpGatewayImpl
 import br.com.fiap.pagamento.models.Item
 import br.com.fiap.pagamento.models.Pedido
 import br.com.fiap.pagamento.models.Produto
@@ -9,7 +10,6 @@ import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.verify
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -46,7 +46,7 @@ class GerarQrCodePagamentoHttpGatewayImplTest {
     fun `deve gerar o pagamento pendente com qrcode`() {
         //given
         val pedido = Pedido(
-                referenciaPedido = "1",
+                idPedido = 1L,
                 numeroPedido = "1",
                 valorTotal = Random.nextLong().toBigDecimal(),
                 items = listOf(
@@ -97,7 +97,7 @@ class GerarQrCodePagamentoHttpGatewayImplTest {
     fun `deve lancar um erro quando a integracao de gerar o pagamento falhar`() {
         //given
         val pedido = Pedido(
-                referenciaPedido = "1",
+                idPedido = 1L,
                 numeroPedido = "1",
                 valorTotal = Random.nextLong().toBigDecimal(),
                 items = listOf(
@@ -147,7 +147,7 @@ class GerarQrCodePagamentoHttpGatewayImplTest {
     fun `deve lancar um erro quando o retorno da integracao for diferente de 201`() {
         //given
         val pedido = Pedido(
-                referenciaPedido = "1",
+                idPedido = 1L,
                 numeroPedido = "1",
                 valorTotal = Random.nextLong().toBigDecimal(),
                 items = listOf(

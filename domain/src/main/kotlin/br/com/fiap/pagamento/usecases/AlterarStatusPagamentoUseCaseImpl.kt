@@ -11,8 +11,8 @@ class AlterarStatusPagamentoUseCaseImpl(
     private val pagamentoRepository: PagamentoRepository
 ) : AlterarStatusPagamentoUseCase {
 
-    override fun executar(referenciaPedido: String, status: PagamentoStatus): Pagamento {
-        val pagamento = consultarPagamentoUseCase.executar(referenciaPedido)
+    override fun executar(idPedido: Long, status: PagamentoStatus): Pagamento {
+        val pagamento = consultarPagamentoUseCase.executar(idPedido)
 
         return pagamentoRepository.alterarStatusPagamento(pagamento, status) }
 }

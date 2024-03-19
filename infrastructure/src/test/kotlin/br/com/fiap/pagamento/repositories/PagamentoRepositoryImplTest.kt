@@ -4,6 +4,7 @@ import br.com.fiap.pagamento.entities.PagamentoEntity
 import br.com.fiap.pagamento.enums.PagamentoStatus
 import br.com.fiap.pagamento.exceptions.BaseDeDadosException
 import br.com.fiap.pagamento.repositories.mongo.PagamentoMongoRepository
+import br.com.fiap.pagamento.repositories.mongo.PagamentoRepositoryImpl
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -45,7 +46,7 @@ class PagamentoRepositoryImplTest {
 
         //then
         assertEquals(pagamentoEntity.id, result.id)
-        assertEquals(pagamentoEntity.referenciaPedido, result.referenciaPedido)
+        assertEquals(pagamentoEntity.idPedido, result.idPedido)
         assertEquals(pagamentoEntity.dataHora, result.dataHora)
         assertEquals(pagamentoEntity.qrCode, result.qrCode)
         assertEquals(pagamentoEntity.status, result.status)
@@ -82,23 +83,23 @@ class PagamentoRepositoryImplTest {
         every { pagamentoMongoRepository.findByPedidoId(any()) } returns pagamentoEntity
 
         //when
-        val result = target.consultarPorPedido(pedidoId.toString())!!
+        val result = target.consultarPorPedido(pedidoId)!!
 
         //then
         assertEquals(pagamentoEntity.id, result.id)
-        assertEquals(pagamentoEntity.referenciaPedido, result.referenciaPedido)
+        assertEquals(pagamentoEntity.idPedido, result.idPedido)
         assertEquals(pagamentoEntity.dataHora, result.dataHora)
         assertEquals(pagamentoEntity.qrCode, result.qrCode)
         assertEquals(pagamentoEntity.status, result.status)
         assertEquals(pagamentoEntity.valorTotal, result.valorTotal)
 
-        verify(exactly = 1) { pagamentoMongoRepository.findByPedidoId(pedidoId.toString()) }
+        verify(exactly = 1) { pagamentoMongoRepository.findByPedidoId(pedidoId) }
     }
 
     @Test
     fun `deve retornar null quando o pagamento de um pedido nao existir`() {
         //given
-        val pedidoId = "1"
+        val pedidoId = 1L
 
         every { pagamentoMongoRepository.findByPedidoId(any()) } returns null
 
@@ -114,7 +115,7 @@ class PagamentoRepositoryImplTest {
     @Test
     fun `deve lancar uma excecao de base de dados quando a busca falhar`() {
         //given
-        val pedidoId = "1"
+        val pedidoId = 1L
 
         every { pagamentoMongoRepository.findByPedidoId(any()) } throws RuntimeException("Error")
 
@@ -143,7 +144,7 @@ class PagamentoRepositoryImplTest {
 
         //then
         assertEquals(pagamentoEntity.id, result.id)
-        assertEquals(pagamentoEntity.referenciaPedido, result.referenciaPedido)
+        assertEquals(pagamentoEntity.idPedido, result.idPedido)
         assertEquals(pagamentoEntity.dataHora, result.dataHora)
         assertEquals(pagamentoEntity.qrCode, result.qrCode)
         assertEquals(novoStatus, result.status)
@@ -175,7 +176,7 @@ class PagamentoRepositoryImplTest {
     private fun criarPagamentoEntity(pedidoId: Long) =
             PagamentoEntity(
                     id = UUID.randomUUID().toString(),
-                    referenciaPedido = pedidoId.toString(),
+                    idPedido = pedidoId,
                     dataHora = LocalDateTime.now().minusDays(1).toString(),
                     status = PagamentoStatus.APROVADO,
                     qrCode = Random().nextLong().toString(),

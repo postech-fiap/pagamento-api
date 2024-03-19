@@ -1,4 +1,4 @@
-package br.com.fiap.pagamento.gateways
+package br.com.fiap.pagamento.gateways.http
 
 import br.com.fiap.pagamento.enums.PagamentoStatus
 import br.com.fiap.pagamento.exceptions.IntegracaoAPIException
@@ -12,8 +12,8 @@ import org.springframework.web.client.RestTemplate
 private const val ERROR_MESSAGE = "Erro de integração para atualizar o pedido. Detalhes: %s"
 
 class AtualizarPedidoHttpGatewayImpl(
-    private val restTemplate: RestTemplate,
-    private val pedidosApiEndpoint: String
+        private val restTemplate: RestTemplate,
+        private val pedidosApiEndpoint: String
 ) : AtualizarPedidoGateway {
 
     override fun executar(referenciaPedido: String, idPagamento: String, statusPagamento: PagamentoStatus) {
@@ -23,17 +23,17 @@ class AtualizarPedidoHttpGatewayImpl(
             val response =
                 restTemplate.exchange(
                     pedidosApiEndpoint,
-                    HttpMethod.PATCH,
+                        HttpMethod.PATCH,
                     buildHttpEntity(referenciaPedido, idPagamento, statusPagamento),
                     String::class.java
                 )
 
             if (response.statusCode != HttpStatus.OK) {
                 throw IntegracaoAPIException(
-                    String.format(
-                        ERROR_MESSAGE,
-                        "[status_code: " + "${response.statusCode}"
-                    )
+                        String.format(
+                                ERROR_MESSAGE,
+                                "[status_code: " + "${response.statusCode}"
+                        )
                 )
             }
 
